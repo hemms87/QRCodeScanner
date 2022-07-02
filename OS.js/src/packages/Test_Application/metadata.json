@@ -1,0 +1,17 @@
+{
+  "type": "application",
+  "name": "Test_Application",
+  "category": null,
+  "server": "server.js",
+  "icon": "icon.png",
+  "title": {
+    "en_EN": "Test_Application"
+  },
+  "description": {
+    "en_EN": "Test_Application"
+  },
+  "files": [
+    "main.js",
+    "main.css"
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "type": "application",
+  "name": "QrScannerReact",
+  "category": null,
+  "server": "server.js",
+  "icon": "icon.png",
+  "title": {
+    "en_EN": "QrScannerReact"
+  },
+  "description": {
+    "en_EN": "QrScannerReact"
+  },
+  "files": [
+    "main.js",
+    "main.css"
+  ]
+}
