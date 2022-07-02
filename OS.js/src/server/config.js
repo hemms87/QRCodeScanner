@@ -42,6 +42,6 @@ module.exports = {
   public: path.resolve(root, 'dist'),
 
   // This is the new required entry
-  //port: process.env.PORT
-  port: 8000
+  port: process.env.PORT
+  //port: 8000
 };
