@@ -22,7 +22,10 @@ module.exports = (core, proc) => {
             'x-apikey': 'f78b32a7ca80a5797d1e9cf1008be7133e2e4',
             'content-type': 'application/json'
           },
-          body: { OTP: req.body.otp, Verified: true, Module: req.body.module, RoomName: req.body.venue },
+          body: {
+            OTP: req.body.otp, Verified: true, Module: req.body.module, RoomName: req.body.venue,
+            StartDate: req.body.startDate, EndDate: req.body.endDate
+          },
           json: true
         };
 

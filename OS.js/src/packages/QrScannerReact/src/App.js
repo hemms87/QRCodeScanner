@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import QrReader from 'react-qr-reader';
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
+
+import 'react-datepicker/dist/react-datepicker.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default class App extends Component {
     constructor(props) {
@@ -11,12 +16,16 @@ export default class App extends Component {
         this.handleScan = this.handleScan.bind(this);
         this.handleVenueChange = this.handleVenueChange.bind(this);
         this.handleModuleChange = this.handleModuleChange.bind(this);
+        this.handleStartDateChange = this.handleStartDateChange.bind(this);
+        this.handleEndDateChange = this.handleEndDateChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.state = {
             result: 'No result',
             appSTATE: 'Verification',
             currentID: null,
             currentOTP: null,
+            startDate: moment(),
+            endDate: moment(),
             venue: '',
             module: '',
         }
@@ -53,6 +62,14 @@ export default class App extends Component {
         this.setState({ module: event.target.value });
     }
 
+    handleStartDateChange(event) {
+        this.setState({ startDate: event.target.value });
+    }
+
+    handleEndDateChange(event) {
+        this.setState({ endDate: event.target.value });
+    }
+
     handleClick() {
         this.setState({ appSTATE: 'Verification' });
     }
@@ -63,6 +80,8 @@ export default class App extends Component {
         {
             module: this.state.module,
             venue: this.state.venue,
+            startDate: this.state.startDate,
+            endDate: this.state.endDate,
             otp: this.state.currentOTP,
             id: this.state.currentID,
         };
@@ -103,6 +122,20 @@ export default class App extends Component {
                     What module is going on in this room?
                     <input type="text" value={this.state.module} onChange={this.handleModuleChange} />
                 </label>
+                <label>Start Date: </label>
+                <DatePicker
+                    selected={this.state.startDate}
+                    onChange={this.handleStartDateChange}
+                    name="startDate"
+                    dateFormat="dd/MM/yyyy"
+                />
+                <label>End Date: </label>
+                <DatePicker
+                    selected={this.state.endDate}
+                    onChange={this.handleEndDateChange}
+                    name="endDate"
+                    dateFormat="dd/MM/yyyy"
+                />
                 <br />
                 <input type="submit" value="Verify now!!" />
                 <br />
