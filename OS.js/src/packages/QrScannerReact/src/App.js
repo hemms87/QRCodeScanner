@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import QrReader from 'react-qr-reader';
-import DatePicker from 'react-datepicker';
-import moment from 'moment';
 
 export default class App extends Component {
     constructor(props) {
@@ -21,8 +19,8 @@ export default class App extends Component {
             appSTATE: 'Verification',
             currentID: null,
             currentOTP: null,
-            startDate: moment(),
-            endDate: moment(),
+            startDate: '',
+            endDate: '',
             venue: '',
             module: '',
         }
@@ -120,15 +118,15 @@ export default class App extends Component {
                     <input type="text" value={this.state.module} onChange={this.handleModuleChange} />
                 </label>
                 <label>Start Date: </label>
-                <DatePicker
-                    selected={this.state.startDate}
+                <input type="text"
+                    value={this.state.startDate}
                     onChange={this.handleStartDateChange}
                     name="startDate"
                     dateFormat="dd/MM/yyyy"
                 />
                 <label>End Date: </label>
-                <DatePicker
-                    selected={this.state.endDate}
+                <input type="text"
+                    value={this.state.endDate}
                     onChange={this.handleEndDateChange}
                     name="endDate"
                     dateFormat="dd/MM/yyyy"
