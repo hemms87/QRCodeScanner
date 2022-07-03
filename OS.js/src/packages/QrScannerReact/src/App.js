@@ -4,9 +4,6 @@ import QrReader from 'react-qr-reader';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 
-import 'react-datepicker/dist/react-datepicker.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-
 export default class App extends Component {
     constructor(props) {
         super(props);
