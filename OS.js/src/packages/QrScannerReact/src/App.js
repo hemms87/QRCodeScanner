@@ -13,6 +13,10 @@ export default class App extends Component {
         this.handleModuleChange = this.handleModuleChange.bind(this);
         this.handleStartDateChange = this.handleStartDateChange.bind(this);
         this.handleEndDateChange = this.handleEndDateChange.bind(this);
+        this.handleStartTimeChange = this.handleStartTimeChange.bind(this);
+        this.handleEndTimeChange = this.handleEndTimeChange.bind(this);
+        this.handlePassOnPrivilegeChange = this.handlePassOnPrivilegeChange.bind(this);
+        this.handleCanScanChange = this.handleCanScanChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.state = {
             result: 'No result',
@@ -21,6 +25,10 @@ export default class App extends Component {
             currentOTP: null,
             startDate: '',
             endDate: '',
+            startTime: '',
+            endTime: '',
+            passOnPrivilege: false,
+            canScan: false,
             venue: '',
             module: '',
         }
@@ -65,6 +73,22 @@ export default class App extends Component {
         this.setState({ endDate: event.target.value });
     }
 
+    handleStartTimeChange(event) {
+        this.setState({ startTime: event.target.value });
+    }
+
+    handleEndTimeChange(event) {
+        this.setState({ endTime: event.target.value });
+    }
+
+    handlePassOnPrivilegeChange(event) {
+        this.setState({ passOnPrivilege: event.target.value });
+    }
+
+    handleCanScanChange(event) {
+        this.setState({ canScan: event.target.value });
+    }
+
     handleClick() {
         this.setState({ appSTATE: 'Verification' });
     }
@@ -77,6 +101,10 @@ export default class App extends Component {
             venue: this.state.venue,
             startDate: this.state.startDate,
             endDate: this.state.endDate,
+            startTime: this.state.startTime,
+            endTime: this.state.endTime,
+            passOnPrivilege: this.state.passOnPrivilege,
+            canScan: this.state.canScan,
             otp: this.state.currentOTP,
             id: this.state.currentID,
         };
@@ -109,34 +137,61 @@ export default class App extends Component {
 
             view = <form onSubmit={this.handleSubmit}>
                 <label>
-                    What room are you in?
+                    Lab:
                     <input type="text" value={this.state.venue} onChange={this.handleVenueChange} />
                 </label>
                 <br />
                 <label>
-                    What module is going on in this room?
+                    Module Code:
                     <input type="text" value={this.state.module} onChange={this.handleModuleChange} />
                 </label>
-                <label>Start Date: </label>
-                <input type="text"
-                    value={this.state.startDate}
-                    onChange={this.handleStartDateChange}
-                    name="startDate"
-                    dateFormat="dd/MM/yyyy"
-                />
-                <label>End Date: </label>
-                <input type="text"
-                    value={this.state.endDate}
-                    onChange={this.handleEndDateChange}
-                    name="endDate"
-                    dateFormat="dd/MM/yyyy"
-                />
                 <br />
+                <label>Start Date:
+                    <input type="text"
+                        value={this.state.startDate}
+                        onChange={this.handleStartDateChange}
+                        name="startDate"
+                        dateFormat="dd/MM/yyyy"
+                    />
+                </label>
+                <br />
+                <label>End Date:
+                    <input type="text"
+                        value={this.state.endDate}
+                        onChange={this.handleEndDateChange}
+                        name="endDate"
+                        dateFormat="dd/MM/yyyy"
+                    />
+                </label>
+                <br />
+                <label>Session Start Time(HH:MM):
+                    <input type="text"
+                        value={this.state.startTime}
+                        onChange={this.handleStartTimeChange}
+                        name="startTime"
+                    />
+                </label>
+                <br />
+                <label>Session End Time(HH:MM):
+                    <input type="text"
+                        value={this.state.endTime}
+                        onChange={this.handleEndTimeChange}
+                        name="endTime"
+                    />
+                </label>
+                <br />
+                <label>
+                    Pass on Privilege:
+                    <input type="checkbox" value={this.state.passOnPrivilege} onChange={this.handlePassOnPrivilegeChange} />
+                </label>
+                <label>
+                    Can Scan:
+                    <input type="checkbox" value={this.state.canScan} onChange={this.handleCanScanChange} />
+                </label>
                 <input type="submit" value="Verify now!!" />
                 <br />
             </form>
         }
-
         else {
             view = <div>
                 <h2>An error occured during scanning</h2>

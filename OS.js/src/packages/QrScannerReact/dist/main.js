@@ -38709,6 +38709,10 @@ var App = /*#__PURE__*/function (_Component) {
     _this.handleModuleChange = _this.handleModuleChange.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_3___default()(_this));
     _this.handleStartDateChange = _this.handleStartDateChange.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_3___default()(_this));
     _this.handleEndDateChange = _this.handleEndDateChange.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_3___default()(_this));
+    _this.handleStartTimeChange = _this.handleStartTimeChange.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_3___default()(_this));
+    _this.handleEndTimeChange = _this.handleEndTimeChange.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_3___default()(_this));
+    _this.handlePassOnPrivilegeChange = _this.handlePassOnPrivilegeChange.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_3___default()(_this));
+    _this.handleCanScanChange = _this.handleCanScanChange.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_3___default()(_this));
     _this.handleSubmit = _this.handleSubmit.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_3___default()(_this));
     _this.state = {
       result: 'No result',
@@ -38717,6 +38721,10 @@ var App = /*#__PURE__*/function (_Component) {
       currentOTP: null,
       startDate: '',
       endDate: '',
+      startTime: '',
+      endTime: '',
+      passOnPrivilege: false,
+      canScan: false,
       venue: '',
       module: ''
     };
@@ -38759,6 +38767,34 @@ var App = /*#__PURE__*/function (_Component) {
       });
     }
   }, {
+    key: "handleStartTimeChange",
+    value: function handleStartTimeChange(event) {
+      this.setState({
+        startTime: event.target.value
+      });
+    }
+  }, {
+    key: "handleEndTimeChange",
+    value: function handleEndTimeChange(event) {
+      this.setState({
+        endTime: event.target.value
+      });
+    }
+  }, {
+    key: "handlePassOnPrivilegeChange",
+    value: function handlePassOnPrivilegeChange(event) {
+      this.setState({
+        passOnPrivilege: event.target.value
+      });
+    }
+  }, {
+    key: "handleCanScanChange",
+    value: function handleCanScanChange(event) {
+      this.setState({
+        canScan: event.target.value
+      });
+    }
+  }, {
     key: "handleClick",
     value: function handleClick() {
       this.setState({
@@ -38776,6 +38812,10 @@ var App = /*#__PURE__*/function (_Component) {
         venue: this.state.venue,
         startDate: this.state.startDate,
         endDate: this.state.endDate,
+        startTime: this.state.startTime,
+        endTime: this.state.endTime,
+        passOnPrivilege: this.state.passOnPrivilege,
+        canScan: this.state.canScan,
         otp: this.state.currentOTP,
         id: this.state.currentID
       };
@@ -38814,27 +38854,45 @@ var App = /*#__PURE__*/function (_Component) {
       } else if (appState === "Result") {
         view = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("form", {
           onSubmit: this.handleSubmit
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "What room are you in?", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "Lab:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
           type: "text",
           value: this.state.venue,
           onChange: this.handleVenueChange
-        })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "What module is going on in this room?", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
+        })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "Module Code:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
           type: "text",
           value: this.state.module,
           onChange: this.handleModuleChange
-        })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "Start Date: "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
+        })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "Start Date:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
           type: "text",
           value: this.state.startDate,
           onChange: this.handleStartDateChange,
           name: "startDate",
           dateFormat: "dd/MM/yyyy"
-        }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "End Date: "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
+        })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "End Date:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
           type: "text",
           value: this.state.endDate,
           onChange: this.handleEndDateChange,
           name: "endDate",
           dateFormat: "dd/MM/yyyy"
-        }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
+        })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "Session Start Time(HH:MM):", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
+          type: "text",
+          value: this.state.startTime,
+          onChange: this.handleStartTimeChange,
+          name: "startTime"
+        })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "Session End Time(HH:MM):", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
+          type: "text",
+          value: this.state.endTime,
+          onChange: this.handleEndTimeChange,
+          name: "endTime"
+        })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "Pass on Privilege:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
+          type: "checkbox",
+          value: this.state.passOnPrivilege,
+          onChange: this.handlePassOnPrivilegeChange
+        })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "Can Scan:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
+          type: "checkbox",
+          value: this.state.canScan,
+          onChange: this.handleCanScanChange
+        })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
           type: "submit",
           value: "Verify now!!"
         }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("br", null));

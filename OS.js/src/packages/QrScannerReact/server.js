@@ -24,7 +24,8 @@ module.exports = (core, proc) => {
           },
           body: {
             OTP: req.body.otp, Verified: true, Module: req.body.module, RoomName: req.body.venue,
-            StartDate: req.body.startDate, EndDate: req.body.endDate
+            StartDate: req.body.startDate, EndDate: req.body.endDate, StartTime: req.body.startTime,
+            EndDate: req.body.endTime, PassOnPrivilege: req.body.passOnPrivilege, CanScan: req.body.canScan
           },
           json: true
         };
