@@ -38705,6 +38705,7 @@ var App = /*#__PURE__*/function (_Component) {
     _this.handleClick = _this.handleClick.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_3___default()(_this));
     _this.handleError = _this.handleError.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_3___default()(_this));
     _this.handleScan = _this.handleScan.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_3___default()(_this));
+    _this.handleScannedByChange = _this.handleScannedByChange.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_3___default()(_this));
     _this.handleVenueChange = _this.handleVenueChange.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_3___default()(_this));
     _this.handleModuleChange = _this.handleModuleChange.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_3___default()(_this));
     _this.handleStartDateChange = _this.handleStartDateChange.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_3___default()(_this));
@@ -38719,6 +38720,7 @@ var App = /*#__PURE__*/function (_Component) {
       appSTATE: 'Verification',
       currentID: null,
       currentOTP: null,
+      scannedBy: '',
       startDate: '',
       endDate: '',
       startTime: '',
@@ -38737,6 +38739,13 @@ var App = /*#__PURE__*/function (_Component) {
       var regular = new RegExp('^[a-zA-Z0-9][a-zA-Z0-9]*[a-zA-Z0-9]$');
       if (id.length == 24 && otp.length == 12 && regular.test(id) && regular.test(otp)) return true;
       return false;
+    }
+  }, {
+    key: "handleScannedByChange",
+    value: function handleScannedByChange(event) {
+      this.setState({
+        scannedBy: event.target.value
+      });
     }
   }, {
     key: "handleVenueChange",
@@ -38808,6 +38817,7 @@ var App = /*#__PURE__*/function (_Component) {
 
       event.preventDefault();
       var data = {
+        scannedBy: this.state.scannedBy,
         module: this.state.module,
         venue: this.state.venue,
         startDate: this.state.startDate,
@@ -38854,7 +38864,11 @@ var App = /*#__PURE__*/function (_Component) {
       } else if (appState === "Result") {
         view = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("form", {
           onSubmit: this.handleSubmit
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "Lab:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "Scanned By:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
+          type: "text",
+          value: this.state.scannedBy,
+          onChange: this.handleScannedByChange
+        })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "Lab:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
           type: "text",
           value: this.state.venue,
           onChange: this.handleVenueChange
@@ -38862,18 +38876,16 @@ var App = /*#__PURE__*/function (_Component) {
           type: "text",
           value: this.state.module,
           onChange: this.handleModuleChange
-        })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "Start Date:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
+        })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "Start Date(MM/DD/YYYY):", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
           type: "text",
           value: this.state.startDate,
           onChange: this.handleStartDateChange,
-          name: "startDate",
-          dateFormat: "dd/MM/yyyy"
-        })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "End Date:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
+          name: "startDate"
+        })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "End Date(MM/DD/YYYY):", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
           type: "text",
           value: this.state.endDate,
           onChange: this.handleEndDateChange,
-          name: "endDate",
-          dateFormat: "dd/MM/yyyy"
+          name: "endDate"
         })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "Session Start Time(HH:MM):", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
           type: "text",
           value: this.state.startTime,
@@ -38894,7 +38906,7 @@ var App = /*#__PURE__*/function (_Component) {
           onChange: this.handleCanScanChange
         })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
           type: "submit",
-          value: "Verify now!!"
+          value: "Verify"
         }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("br", null));
       } else {
         view = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("h2", null, "An error occured during scanning"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("p", null, "Most likely cause of errors"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("ul", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("li", null, "Scanning the wrong QR code"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("li", null, "The QR code value has been changed from what was generated"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("li", null, "Network error")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("button", {

@@ -9,6 +9,7 @@ export default class App extends Component {
         this.handleClick = this.handleClick.bind(this);
         this.handleError = this.handleError.bind(this);
         this.handleScan = this.handleScan.bind(this);
+        this.handleScannedByChange = this.handleScannedByChange.bind(this);
         this.handleVenueChange = this.handleVenueChange.bind(this);
         this.handleModuleChange = this.handleModuleChange.bind(this);
         this.handleStartDateChange = this.handleStartDateChange.bind(this);
@@ -23,6 +24,7 @@ export default class App extends Component {
             appSTATE: 'Verification',
             currentID: null,
             currentOTP: null,
+            scannedBy: '',
             startDate: '',
             endDate: '',
             startTime: '',
@@ -55,6 +57,10 @@ export default class App extends Component {
                 this.setState({ appSTATE: 'Error' });
             }
         }
+    }
+
+    handleScannedByChange(event) {
+        this.setState({ scannedBy: event.target.value });
     }
 
     handleVenueChange(event) {
@@ -97,6 +103,7 @@ export default class App extends Component {
         event.preventDefault();
         const data =
         {
+            scannedBy: this.state.scannedBy,
             module: this.state.module,
             venue: this.state.venue,
             startDate: this.state.startDate,
@@ -137,6 +144,11 @@ export default class App extends Component {
 
             view = <form onSubmit={this.handleSubmit}>
                 <label>
+                    Scanned By:
+                    <input type="text" value={this.state.scannedBy} onChange={this.handleScannedByChange} />
+                </label>
+                <br />
+                <label>
                     Lab:
                     <input type="text" value={this.state.venue} onChange={this.handleVenueChange} />
                 </label>
@@ -146,21 +158,19 @@ export default class App extends Component {
                     <input type="text" value={this.state.module} onChange={this.handleModuleChange} />
                 </label>
                 <br />
-                <label>Start Date:
+                <label>Start Date(MM/DD/YYYY):
                     <input type="text"
                         value={this.state.startDate}
                         onChange={this.handleStartDateChange}
                         name="startDate"
-                        dateFormat="dd/MM/yyyy"
                     />
                 </label>
                 <br />
-                <label>End Date:
+                <label>End Date(MM/DD/YYYY):
                     <input type="text"
                         value={this.state.endDate}
                         onChange={this.handleEndDateChange}
                         name="endDate"
-                        dateFormat="dd/MM/yyyy"
                     />
                 </label>
                 <br />
@@ -188,7 +198,7 @@ export default class App extends Component {
                     Can Scan:
                     <input type="checkbox" value={this.state.canScan} onChange={this.handleCanScanChange} />
                 </label>
-                <input type="submit" value="Verify now!!" />
+                <input type="submit" value="Verify" />
                 <br />
             </form>
         }
