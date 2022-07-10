@@ -38705,6 +38705,7 @@ var App = /*#__PURE__*/function (_Component) {
     _this.handleClick = _this.handleClick.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_3___default()(_this));
     _this.handleError = _this.handleError.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_3___default()(_this));
     _this.handleScan = _this.handleScan.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_3___default()(_this));
+    _this.handleUserIdChange = _this.handleUserIdChange.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_3___default()(_this));
     _this.handleScannedByChange = _this.handleScannedByChange.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_3___default()(_this));
     _this.handleVenueChange = _this.handleVenueChange.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_3___default()(_this));
     _this.handleModuleChange = _this.handleModuleChange.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_3___default()(_this));
@@ -38720,6 +38721,7 @@ var App = /*#__PURE__*/function (_Component) {
       appSTATE: 'Verification',
       currentID: null,
       currentOTP: null,
+      userId: '',
       scannedBy: '',
       startDate: '',
       endDate: '',
@@ -38739,6 +38741,13 @@ var App = /*#__PURE__*/function (_Component) {
       var regular = new RegExp('^[a-zA-Z0-9][a-zA-Z0-9]*[a-zA-Z0-9]$');
       if (id.length == 24 && otp.length == 12 && regular.test(id) && regular.test(otp)) return true;
       return false;
+    }
+  }, {
+    key: "handleUserIdChange",
+    value: function handleUserIdChange(event) {
+      this.setState({
+        userId: event.target.value
+      });
     }
   }, {
     key: "handleScannedByChange",
@@ -38793,14 +38802,14 @@ var App = /*#__PURE__*/function (_Component) {
     key: "handlePassOnPrivilegeChange",
     value: function handlePassOnPrivilegeChange(event) {
       this.setState({
-        passOnPrivilege: event.target.value
+        passOnPrivilege: !event.target.value
       });
     }
   }, {
     key: "handleCanScanChange",
     value: function handleCanScanChange(event) {
       this.setState({
-        canScan: event.target.value
+        canScan: !event.target.value
       });
     }
   }, {
@@ -38817,6 +38826,7 @@ var App = /*#__PURE__*/function (_Component) {
 
       event.preventDefault();
       var data = {
+        userId: this.state.userId,
         scannedBy: this.state.scannedBy,
         module: this.state.module,
         venue: this.state.venue,
@@ -38864,7 +38874,11 @@ var App = /*#__PURE__*/function (_Component) {
       } else if (appState === "Result") {
         view = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("form", {
           onSubmit: this.handleSubmit
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "Scanned By:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "User ID:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
+          type: "text",
+          value: this.state.userId,
+          onChange: this.handleUserIdChange
+        })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "Scanned By:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
           type: "text",
           value: this.state.scannedBy,
           onChange: this.handleScannedByChange

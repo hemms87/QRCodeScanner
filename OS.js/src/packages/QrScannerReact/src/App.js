@@ -9,6 +9,7 @@ export default class App extends Component {
         this.handleClick = this.handleClick.bind(this);
         this.handleError = this.handleError.bind(this);
         this.handleScan = this.handleScan.bind(this);
+        this.handleUserIdChange = this.handleUserIdChange.bind(this);
         this.handleScannedByChange = this.handleScannedByChange.bind(this);
         this.handleVenueChange = this.handleVenueChange.bind(this);
         this.handleModuleChange = this.handleModuleChange.bind(this);
@@ -24,6 +25,7 @@ export default class App extends Component {
             appSTATE: 'Verification',
             currentID: null,
             currentOTP: null,
+            userId: '',
             scannedBy: '',
             startDate: '',
             endDate: '',
@@ -59,6 +61,10 @@ export default class App extends Component {
         }
     }
 
+    handleUserIdChange(event) {
+        this.setState({ userId: event.target.value });
+    }
+
     handleScannedByChange(event) {
         this.setState({ scannedBy: event.target.value });
     }
@@ -88,11 +94,11 @@ export default class App extends Component {
     }
 
     handlePassOnPrivilegeChange(event) {
-        this.setState({ passOnPrivilege: event.target.value });
+        this.setState({ passOnPrivilege: !event.target.value });
     }
 
     handleCanScanChange(event) {
-        this.setState({ canScan: event.target.value });
+        this.setState({ canScan: !event.target.value });
     }
 
     handleClick() {
@@ -103,6 +109,7 @@ export default class App extends Component {
         event.preventDefault();
         const data =
         {
+            userId: this.state.userId,
             scannedBy: this.state.scannedBy,
             module: this.state.module,
             venue: this.state.venue,
@@ -143,6 +150,11 @@ export default class App extends Component {
         else if (appState === "Result") {
 
             view = <form onSubmit={this.handleSubmit}>
+                <label>
+                    User ID:
+                    <input type="text" value={this.state.userId} onChange={this.handleUserIdChange} />
+                </label>
+                <br />
                 <label>
                     Scanned By:
                     <input type="text" value={this.state.scannedBy} onChange={this.handleScannedByChange} />
@@ -192,11 +204,13 @@ export default class App extends Component {
                 <br />
                 <label>
                     Pass on Privilege:
-                    <input type="checkbox" value={this.state.passOnPrivilege} onChange={this.handlePassOnPrivilegeChange} />
+                    <input type="checkbox" value={this.state.passOnPrivilege}
+                        onChange={this.handlePassOnPrivilegeChange} />
                 </label>
                 <label>
                     Can Scan:
-                    <input type="checkbox" value={this.state.canScan} onChange={this.handleCanScanChange} />
+                    <input type="checkbox" value={this.state.canScan}
+                        onChange={this.handleCanScanChange} />
                 </label>
                 <input type="submit" value="Verify" />
                 <br />
