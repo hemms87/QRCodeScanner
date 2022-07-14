@@ -94,11 +94,11 @@ export default class App extends Component {
     }
 
     handlePassOnPrivilegeChange(event) {
-        this.setState({ passOnPrivilege: !event.target.value });
+        this.setState({ passOnPrivilege: !this.state.passOnPrivilege });
     }
 
     handleCanScanChange(event) {
-        this.setState({ canScan: !event.target.value });
+        this.setState({ canScan: !this.state.canScan });
     }
 
     handleClick() {
@@ -204,12 +204,12 @@ export default class App extends Component {
                 <br />
                 <label>
                     Pass on Privilege:
-                    <input type="checkbox" value={this.state.passOnPrivilege}
+                    <input type="checkbox" checked={this.state.passOnPrivilege}
                         onChange={this.handlePassOnPrivilegeChange} />
                 </label>
                 <label>
                     Can Scan:
-                    <input type="checkbox" value={this.state.canScan}
+                    <input type="checkbox" checked={this.state.canScan}
                         onChange={this.handleCanScanChange} />
                 </label>
                 <input type="submit" value="Verify" />

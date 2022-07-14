@@ -38802,14 +38802,14 @@ var App = /*#__PURE__*/function (_Component) {
     key: "handlePassOnPrivilegeChange",
     value: function handlePassOnPrivilegeChange(event) {
       this.setState({
-        passOnPrivilege: !event.target.value
+        passOnPrivilege: !this.state.passOnPrivilege
       });
     }
   }, {
     key: "handleCanScanChange",
     value: function handleCanScanChange(event) {
       this.setState({
-        canScan: !event.target.value
+        canScan: !this.state.canScan
       });
     }
   }, {
@@ -38912,11 +38912,11 @@ var App = /*#__PURE__*/function (_Component) {
           name: "endTime"
         })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "Pass on Privilege:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
           type: "checkbox",
-          value: this.state.passOnPrivilege,
+          checked: this.state.passOnPrivilege,
           onChange: this.handlePassOnPrivilegeChange
         })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "Can Scan:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
           type: "checkbox",
-          value: this.state.canScan,
+          checked: this.state.canScan,
           onChange: this.handleCanScanChange
         })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
           type: "submit",
