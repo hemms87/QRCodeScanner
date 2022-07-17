@@ -38821,6 +38821,7 @@ var App = /*#__PURE__*/function (_Component) {
       var otpData = {
         userId: this.state.currentUserId,
         sessionId: this.state.currentSessionId,
+        scannedBy: this.state.currentScannedBy,
         otp: this.state.currentOTP,
         id: this.state.currentID
       };

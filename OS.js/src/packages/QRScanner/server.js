@@ -23,7 +23,8 @@ module.exports = (core, proc) => {
             'content-type': 'application/json'
           },
           body: {
-            OTP: req.body.otp, Verified: true, UserId: req.body.userId, SessionId: req.body.sessionId
+            OTP: req.body.otp, Verified: true, UserId: req.body.userId, SessionId: req.body.sessionId,
+            ScannedBy: req.body.scannedBy
           },
           json: true
         };

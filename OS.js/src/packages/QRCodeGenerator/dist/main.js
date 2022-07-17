@@ -34560,14 +34560,14 @@ var App = /*#__PURE__*/function (_Component) {
                 response = _context.sent;
                 console.log(response);
                 stats = response.data.isVerified === 'true';
-                qr_url = response.data.id + '/' + response.data.otp + '/' + scannedBy + '/' + response.data.sessionId;
+                qr_url = response.data.id + '/' + response.data.otp + '/' + response.data.userId + '/' + response.data.scannedBy + '/' + response.data.sessionId;
                 this.setState({
                   isClicked: true,
                   current_id: response.data.id,
                   is_verified: stats,
                   current_url: qr_url,
                   sessionId: response.data.sessionId,
-                  userId: userId,
+                  userId: response.data.userId,
                   scannedBy: scannedBy
                 });
                 console.log(this.state);
