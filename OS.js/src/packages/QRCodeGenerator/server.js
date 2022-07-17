@@ -46,14 +46,18 @@ module.exports = (core, proc) => {
             OTP: otp_value,
             Verified: false,
             UserId: req.body.userId,
-            SessionId: req.body.sessionId
+            SessionId: req.body.sessionId,
+            ScannedBy: req.body.scannedBy
           },
           json: true
         };
 
         request(options, function (error, response, body) {
           if (error) throw new Error(error);
-          res.json({ id: body._id, otp: body.OTP, isVerified: body.Verified, userId: body.UserId, sessionId: body.SessionId });
+          res.json({
+            id: body._id, otp: body.OTP, isVerified: body.Verified, userId: body.UserId,
+            sessionId: body.SessionId, scannedBy: body.scannedBy
+          });
         });
       });
       // WebSocket Route example (see index.js)
