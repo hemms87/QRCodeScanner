@@ -7,12 +7,14 @@ class App extends Component {
     super(props);
     this.createotp = this.createotp.bind(this);
     this.handleUserIdChange = this.handleUserIdChange.bind(this);
+    this.handleScannedByChange = this.handleScannedByChange.bind(this);
     this.state = {
       current_url: '',
       current_id: '',
       isClicked: false,
       is_verified: '',
       userId: '',
+      scannedBy: '',
       sessionId: '',
     }
   }
@@ -21,16 +23,21 @@ class App extends Component {
     this.setState({ userId: event.target.value });
   }
 
+  handleScannedByChange(event) {
+    this.setState({ scannedBy: event.target.value });
+  }
+
   async createotp() {
     var sessionId = '_' + Math.random().toString(36).substring(2, 9);
     var userId = this.state.userId;
+    var scannedBy = this.state.scannedBy;
     let response = await axios.post('/apps/QRCodeGenerator/create-otp', { userId, sessionId });
     console.log(response);
     const stats = (response.data.isVerified === 'true');
     const qr_url = response.data.id + '/' + response.data.otp;
     this.setState({
       isClicked: true, current_id: response.data.id, is_verified: stats, current_url: qr_url,
-      sessionId: sessionId, userId: userId
+      sessionId: sessionId, userId: userId, scannedBy: scannedBy
     });
     console.log(this.state);
   }
@@ -41,7 +48,7 @@ class App extends Component {
 
     if (btnClicked) {
       view = <QrcodeView url={this.state.current_url} isVerified={this.state.is_verified} id={this.state.current_id}
-        userId={this.state.userId} sessionId={this.state.sessionId} />;
+        userId={this.state.userId} sessionId={this.state.sessionId} scannedBy={this.state.scannedBy} />;
     }
 
     else {
@@ -49,6 +56,12 @@ class App extends Component {
         User ID:
         <input type="text" value={this.state.userId} onChange={this.handleUserIdChange} />
       </label>
+        <br />
+        <label>
+          Scanned By:
+          <input type="text" value={this.state.scannedBy} onChange={this.handleScannedByChange} />
+        </label>
+        <br />
         <button onClick={this.createotp}>Get QRCode</button>
       </div>
     }

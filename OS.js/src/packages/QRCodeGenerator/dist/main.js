@@ -34511,12 +34511,14 @@ var App = /*#__PURE__*/function (_Component) {
     _this = _super.call(this, props);
     _this.createotp = _this.createotp.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_3___default()(_this));
     _this.handleUserIdChange = _this.handleUserIdChange.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_3___default()(_this));
+    _this.handleScannedByChange = _this.handleScannedByChange.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_3___default()(_this));
     _this.state = {
       current_url: '',
       current_id: '',
       isClicked: false,
       is_verified: '',
       userId: '',
+      scannedBy: '',
       sessionId: ''
     };
     return _this;
@@ -34530,23 +34532,31 @@ var App = /*#__PURE__*/function (_Component) {
       });
     }
   }, {
+    key: "handleScannedByChange",
+    value: function handleScannedByChange(event) {
+      this.setState({
+        scannedBy: event.target.value
+      });
+    }
+  }, {
     key: "createotp",
     value: function () {
       var _createotp = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_7___default.a.mark(function _callee() {
-        var sessionId, userId, response, stats, qr_url;
+        var sessionId, userId, scannedBy, response, stats, qr_url;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_7___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 sessionId = '_' + Math.random().toString(36).substring(2, 9);
                 userId = this.state.userId;
-                _context.next = 4;
+                scannedBy = this.state.scannedBy;
+                _context.next = 5;
                 return axios__WEBPACK_IMPORTED_MODULE_10___default.a.post('/apps/QRCodeGenerator/create-otp', {
                   userId: userId,
                   sessionId: sessionId
                 });
 
-              case 4:
+              case 5:
                 response = _context.sent;
                 console.log(response);
                 stats = response.data.isVerified === 'true';
@@ -34557,11 +34567,12 @@ var App = /*#__PURE__*/function (_Component) {
                   is_verified: stats,
                   current_url: qr_url,
                   sessionId: sessionId,
-                  userId: userId
+                  userId: userId,
+                  scannedBy: scannedBy
                 });
                 console.log(this.state);
 
-              case 10:
+              case 11:
               case "end":
                 return _context.stop();
             }
@@ -34587,14 +34598,19 @@ var App = /*#__PURE__*/function (_Component) {
           isVerified: this.state.is_verified,
           id: this.state.current_id,
           userId: this.state.userId,
-          sessionId: this.state.sessionId
+          sessionId: this.state.sessionId,
+          scannedBy: this.state.scannedBy
         });
       } else {
         view = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "User ID:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
           type: "text",
           value: this.state.userId,
           onChange: this.handleUserIdChange
-        })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("button", {
+        })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "Scanned By:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
+          type: "text",
+          value: this.state.scannedBy,
+          onChange: this.handleScannedByChange
+        })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("button", {
           onClick: this.createotp
         }, "Get QRCode"));
       }
