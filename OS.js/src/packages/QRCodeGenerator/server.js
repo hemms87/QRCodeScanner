@@ -56,7 +56,7 @@ module.exports = (core, proc) => {
           if (error) throw new Error(error);
           res.json({
             id: body._id, otp: body.OTP, isVerified: body.Verified, userId: body.UserId,
-            sessionId: body.SessionId, scannedBy: body.scannedBy
+            sessionId: body.SessionId, scannedBy: body.ScannedBy
           });
         });
       });
