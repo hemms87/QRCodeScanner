@@ -34590,7 +34590,7 @@ var App = /*#__PURE__*/function (_Component) {
           sessionId: this.state.sessionId
         });
       } else {
-        view = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("form", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "User ID:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
+        view = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "User ID:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
           type: "text",
           value: this.state.userId,
           onChange: this.handleUserIdChange
@@ -34625,7 +34625,9 @@ var QrcodeView = /*#__PURE__*/function (_Component2) {
     _this2.state = {
       url: props.url,
       id: props.id,
-      isVerified: props.isVerified
+      isVerified: props.isVerified,
+      userId: props.userId,
+      sessionId: props.sessionId
     };
     return _this2;
   }

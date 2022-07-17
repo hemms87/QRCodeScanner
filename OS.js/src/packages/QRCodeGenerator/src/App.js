@@ -45,12 +45,12 @@ class App extends Component {
     }
 
     else {
-      view = <form><label>
+      view = <div><label>
         User ID:
         <input type="text" value={this.state.userId} onChange={this.handleUserIdChange} />
       </label>
         <button onClick={this.createotp}>Get QRCode</button>
-      </form>
+      </div>
     }
 
     return (
@@ -73,6 +73,8 @@ class QrcodeView extends Component {
       url: props.url,
       id: props.id,
       isVerified: props.isVerified,
+      userId: props.userId,
+      sessionId: props.sessionId
     };
   }
 
