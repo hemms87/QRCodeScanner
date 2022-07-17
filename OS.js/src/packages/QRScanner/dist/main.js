@@ -2314,7 +2314,7 @@ var register = function register(core, args, options, metadata) {
   }); // Create  a new Window instance
 
   proc.createWindow({
-    id: 'QrScannerReactWindow',
+    id: 'QrScanner',
     title: metadata.title.en_EN,
     icon: proc.resource(proc.metadata.icon),
     dimension: {

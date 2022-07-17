@@ -34,10 +34,10 @@ class App extends Component {
     let response = await axios.post('/apps/QRCodeGenerator/create-otp', { userId, sessionId });
     console.log(response);
     const stats = (response.data.isVerified === 'true');
-    const qr_url = response.data.id + '/' + response.data.otp;
+    const qr_url = response.data.id + '/' + response.data.otp + '/' + scannedBy + '/' + response.data.sessionId;
     this.setState({
       isClicked: true, current_id: response.data.id, is_verified: stats, current_url: qr_url,
-      sessionId: sessionId, userId: userId, scannedBy: scannedBy
+      sessionId: response.data.sessionId, userId: userId, scannedBy: scannedBy
     });
     console.log(this.state);
   }
