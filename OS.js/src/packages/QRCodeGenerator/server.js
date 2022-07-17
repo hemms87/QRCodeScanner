@@ -12,7 +12,7 @@ module.exports = (core, proc) => {
 
       routeAuthenticated('POST', proc.resource('/get-items'), (req, res) => {
         const object_id = req.body.id;
-        const object_url = 'https://otpcodes-8c81.restdb.io/rest/otp-storage' + '/' + object_id;
+        const object_url = 'https://otpcodes-8c81.restdb.io/rest/otpswithsessionids' + '/' + object_id;
         var settings = {
           url: object_url,
           method: 'GET',
