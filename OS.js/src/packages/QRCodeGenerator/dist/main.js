@@ -34553,7 +34553,8 @@ var App = /*#__PURE__*/function (_Component) {
                 _context.next = 5;
                 return axios__WEBPACK_IMPORTED_MODULE_10___default.a.post('/apps/QRCodeGenerator/create-otp', {
                   userId: userId,
-                  sessionId: sessionId
+                  sessionId: sessionId,
+                  scannedBy: scannedBy
                 });
 
               case 5:

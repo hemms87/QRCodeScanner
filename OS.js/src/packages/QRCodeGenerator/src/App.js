@@ -31,7 +31,7 @@ class App extends Component {
     var sessionId = '_' + Math.random().toString(36).substring(2, 9);
     var userId = this.state.userId;
     var scannedBy = this.state.scannedBy;
-    let response = await axios.post('/apps/QRCodeGenerator/create-otp', { userId, sessionId });
+    let response = await axios.post('/apps/QRCodeGenerator/create-otp', { userId, sessionId, scannedBy });
     console.log(response);
     const stats = (response.data.isVerified === 'true');
     const qr_url = response.data.id + '/' + response.data.otp + '/' + response.data.userId + '/' + response.data.scannedBy + '/' + response.data.sessionId;
