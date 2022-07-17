@@ -1,0 +1,17 @@
+{
+  "type": "application",
+  "name": "QRCodeGenerator",
+  "category": null,
+  "server": "server.js",
+  "icon": "icon.png",
+  "title": {
+    "en_EN": "QRCodeGenerator"
+  },
+  "description": {
+    "en_EN": "QRCodeGenerator"
+  },
+  "files": [
+    "main.js",
+    "main.css"
+  ]
+}
