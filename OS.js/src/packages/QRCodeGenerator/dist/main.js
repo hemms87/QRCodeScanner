@@ -34542,7 +34542,9 @@ var App = /*#__PURE__*/function (_Component) {
     key: "createotp",
     value: function () {
       var _createotp = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_0___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_7___default.a.mark(function _callee() {
-        var sessionId, userId, scannedBy, response, stats, qr_url;
+        var _this2 = this;
+
+        var sessionId, userId, scannedBy, response, stats, qr_url, canScan;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_7___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -34571,9 +34573,26 @@ var App = /*#__PURE__*/function (_Component) {
                   userId: response.data.userId,
                   scannedBy: scannedBy
                 });
+                canScan = false;
+                axios__WEBPACK_IMPORTED_MODULE_10___default.a.get('/apps/QRCodeGenerator/retrieve-privilege').then(function (response) {
+                  console.log("Get response " + JSON.stringify(response));
+
+                  for (var i = 0; i < response.data.length; i++) {
+                    if (response.data[i].scannedBy === scannedBy) {
+                      if (response.data[i].canScan) {
+                        canScan = true;
+                        break;
+                      }
+                    }
+                  }
+                })["catch"](function (error) {
+                  _this2.setState({
+                    appSTATE: 'Error'
+                  });
+                });
                 console.log(this.state);
 
-              case 11:
+              case 13:
               case "end":
                 return _context.stop();
             }
@@ -34633,20 +34652,20 @@ var QrcodeView = /*#__PURE__*/function (_Component2) {
   var _super2 = _createSuper(QrcodeView);
 
   function QrcodeView(props) {
-    var _this2;
+    var _this3;
 
     _babel_runtime_helpers_classCallCheck__WEBPACK_IMPORTED_MODULE_1___default()(this, QrcodeView);
 
-    _this2 = _super2.call(this, props);
-    _this2.getItems = _this2.getItems.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_3___default()(_this2));
-    _this2.state = {
+    _this3 = _super2.call(this, props);
+    _this3.getItems = _this3.getItems.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_3___default()(_this3));
+    _this3.state = {
       url: props.url,
       id: props.id,
       isVerified: props.isVerified,
       userId: props.userId,
       sessionId: props.sessionId
     };
-    return _this2;
+    return _this3;
   }
 
   _babel_runtime_helpers_createClass__WEBPACK_IMPORTED_MODULE_2___default()(QrcodeView, [{
