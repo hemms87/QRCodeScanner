@@ -26,6 +26,7 @@ export default class App extends Component {
             currentScannedBy: null,
             currentSessionId: null,
             currentModule: null,
+            passOnPrivilegeOfScanningUser: false,
             startDate: '',
             endDate: '',
             startTime: '',
@@ -50,6 +51,7 @@ export default class App extends Component {
         if (data) {
             const [id, otp, userId, scannedBy, sessionId, module] = data.split('/');
             var canScan = false;
+            var passOnPrivilege = false;
             let privilegeResponse = await axios.get('/apps/QRScanner/retrieve-privilege');
             let responseBody = JSON.parse(privilegeResponse.data.response.body);
             if (responseBody) {
@@ -57,6 +59,7 @@ export default class App extends Component {
                     if (responseBody[i].UserId === scannedBy && responseBody[i].Module == module) {
                         if (responseBody[i].CanScan) {
                             canScan = true;
+                            passOnPrivilege = responseBody[i].PassOnPrivilege;
                             break;
                         }
                     }
@@ -66,10 +69,11 @@ export default class App extends Component {
                 this.setState({
                     appSTATE: 'Result', currentID: id, currentOTP: otp,
                     currentUserId: userId, currentScannedBy: scannedBy,
-                    currentSessionId: sessionId, currentModule: module
+                    currentSessionId: sessionId, currentModule: module,
+                    passOnPrivilegeOfScanningUser: passOnPrivilege
                 });
             } else if (this.check(id, otp) == true && !canScan) {
-                this.setState({ appSTATE: 'NoPrivilege' });
+                this.setState({ appSTATE: 'CannotScan' });
             } else {
                 this.setState({ appSTATE: 'Error' });
             }
@@ -130,23 +134,27 @@ export default class App extends Component {
             passOnPrivilege: this.state.passOnPrivilege,
             canScan: this.state.canScan
         };
+        if ((this.state.passOnPrivilege && this.state.passOnPrivilegeOfScanningUser)
+            || !this.state.passOnPrivilege) {
+            axios.put('/apps/QrScanner/update-otp', otpData)
+                .then(response => {
+                    console.log(response);
+                    this.setState({ appSTATE: 'Verification' });
+                })
+                .catch((error) => {
+                    this.setState({ appSTATE: 'Error' })
+                });
 
-        axios.put('/apps/QrScanner/update-otp', otpData)
-            .then(response => {
-                console.log(response);
-                this.setState({ appSTATE: 'Verification' });
-            })
-            .catch((error) => {
-                this.setState({ appSTATE: 'Error' })
-            });
-
-        axios.post('/apps/QrScanner/update-privilege', privilegeData)
-            .then(response => {
-                console.log(response);
-            })
-            .catch((error) => {
-                this.setState({ appSTATE: 'Error' })
-            });
+            axios.post('/apps/QrScanner/update-privilege', privilegeData)
+                .then(response => {
+                    console.log(response);
+                })
+                .catch((error) => {
+                    this.setState({ appSTATE: 'Error' })
+                });
+        } else {
+            this.setState({ appSTATE: 'CannotPassOnPrivilege' });
+        }
     }
 
     render() {
@@ -215,13 +223,22 @@ export default class App extends Component {
                 <input type="submit" value="Verify" />
                 <br />
             </form>
-        } else if (appState === "NoPrivilege") {
+        } else if (appState === "CannotScan") {
             view = <div>
                 <h2>An error occured during scanning</h2>
                 <p>Most likely cause of errors</p>
                 <ul>
                     <li>Module Code did not match to the user who is trying to scan</li>
                     <li>This user does not have privileges to Scan the QR Code</li>
+                </ul>
+                <button onClick={this.handleClick}>Keep Scanning</button>
+            </div>
+        } else if (appState === "CannotPassOnPrivilege") {
+            view = <div>
+                <h2>An error occured during scanning</h2>
+                <p>Most likely cause of errors</p>
+                <ul>
+                    <li>No permissions to Pass on Privileges for the Scanning User</li>
                 </ul>
                 <button onClick={this.handleClick}>Keep Scanning</button>
             </div>
