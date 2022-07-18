@@ -38681,8 +38681,6 @@ var App = /*#__PURE__*/function (_Component) {
     });
 
     _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_7___default()(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_3___default()(_this), "handleScan", function (data) {
-      console.log("Data " + JSON.stringify(data));
-
       if (data) {
         var _data$split = data.split('/'),
             _data$split2 = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default()(_data$split, 5),
@@ -38692,7 +38690,25 @@ var App = /*#__PURE__*/function (_Component) {
             scannedBy = _data$split2[3],
             sessionId = _data$split2[4];
 
-        if (_this.check(id, otp) == true) {
+        var canScan = false;
+        axios__WEBPACK_IMPORTED_MODULE_9___default.a.get('/apps/QrScanner/retrieve-privilege').then(function (response) {
+          console.log("GET Response " + response);
+
+          for (var i = 0; i < response.length; i++) {
+            if (response[i].scannedBy === scannedBy) {
+              if (response[i].canScan) {
+                canScan = true;
+                break;
+              }
+            }
+          }
+        })["catch"](function (error) {
+          _this.setState({
+            appSTATE: 'Error'
+          });
+        });
+
+        if (_this.check(id, otp) == true && canScan) {
           _this.setState({
             appSTATE: 'Result',
             currentID: id,
@@ -38700,6 +38716,10 @@ var App = /*#__PURE__*/function (_Component) {
             currentUserId: userId,
             currentScannedBy: scannedBy,
             currentSessionId: sessionId
+          });
+        } else if (_this.check(id, otp) == true && !canScan) {
+          _this.setState({
+            appSTATE: 'NoPrivilege'
           });
         } else {
           _this.setState({
@@ -38919,6 +38939,10 @@ var App = /*#__PURE__*/function (_Component) {
           type: "submit",
           value: "Verify"
         }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("br", null));
+      } else if (appState === "NoPrivilege") {
+        view = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("h2", null, "An error occured during scanning"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("p", null, "Most likely cause of errors"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("ul", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("li", null, "This user does not have privileges to Scan the QR Code")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("button", {
+          onClick: this.handleClick
+        }, "Keep Scanning"));
       } else {
         view = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("h2", null, "An error occured during scanning"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("p", null, "Most likely cause of errors"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("ul", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("li", null, "Scanning the wrong QR code"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("li", null, "The QR code value has been changed from what was generated"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("li", null, "Network error")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("button", {
           onClick: this.handleClick

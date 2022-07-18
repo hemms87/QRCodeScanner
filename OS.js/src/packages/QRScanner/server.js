@@ -62,6 +62,23 @@ module.exports = (core, proc) => {
 
       });
 
+      routeAuthenticated('GET', proc.resource('/retrieve-privilege'), (req, res) => {
+        var request = require("request");
+        var options = {
+          method: 'GET',
+          url: 'https://otpcodes-8c81.restdb.io/rest/privileges',
+          headers:
+          {
+            'cache-control': 'no-cache',
+            'x-apikey': 'f78b32a7ca80a5797d1e9cf1008be7133e2e4'
+          }
+        };
+        request(options, function (error, response, body) {
+          if (error) throw new Error(error);
+          res.json({ response: response });
+        });
+      });
+
       // WebSocket Route example (see index.js)
       // NOTE: This creates a new connection. You can use a core bound socket instead
       core.app.ws(proc.resource('/socket'), (ws, req) => {

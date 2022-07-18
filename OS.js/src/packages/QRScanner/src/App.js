@@ -48,14 +48,31 @@ export default class App extends Component {
     }
 
     handleScan = data => {
-        console.log("Data " + JSON.stringify(data));
         if (data) {
             const [id, otp, userId, scannedBy, sessionId] = data.split('/');
-            if (this.check(id, otp) == true) {
+            var canScan = false;
+            axios.get('/apps/QrScanner/retrieve-privilege')
+                .then(response => {
+                    console.log("GET Response " + response);
+                    for (var i = 0; i < response.length; i++) {
+                        if (response[i].scannedBy === scannedBy) {
+                            if (response[i].canScan) {
+                                canScan = true;
+                                break;
+                            }
+                        }
+                    }
+                })
+                .catch((error) => {
+                    this.setState({ appSTATE: 'Error' })
+                });
+            if (this.check(id, otp) == true && canScan) {
                 this.setState({
                     appSTATE: 'Result', currentID: id, currentOTP: otp,
                     currentUserId: userId, currentScannedBy: scannedBy, currentSessionId: sessionId
                 });
+            } else if (this.check(id, otp) == true && !canScan) {
+                this.setState({ appSTATE: 'NoPrivilege' });
             } else {
                 this.setState({ appSTATE: 'Error' });
             }
@@ -210,8 +227,16 @@ export default class App extends Component {
                 <input type="submit" value="Verify" />
                 <br />
             </form>
-        }
-        else {
+        } else if (appState === "NoPrivilege") {
+            view = <div>
+                <h2>An error occured during scanning</h2>
+                <p>Most likely cause of errors</p>
+                <ul>
+                    <li>This user does not have privileges to Scan the QR Code</li>
+                </ul>
+                <button onClick={this.handleClick}>Keep Scanning</button>
+            </div>
+        } else {
             view = <div>
                 <h2>An error occured during scanning</h2>
                 <p>Most likely cause of errors</p>
