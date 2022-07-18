@@ -38692,11 +38692,9 @@ var App = /*#__PURE__*/function (_Component) {
 
         var canScan = false;
         axios__WEBPACK_IMPORTED_MODULE_9___default.a.get('/apps/QrScanner/retrieve-privilege').then(function (response) {
-          console.log("GET Response " + response);
-
-          for (var i = 0; i < response.length; i++) {
-            if (response[i].scannedBy === scannedBy) {
-              if (response[i].canScan) {
+          for (var i = 0; i < response.data.length; i++) {
+            if (response.data[i].scannedBy === scannedBy) {
+              if (response.data[i].canScan) {
                 canScan = true;
                 break;
               }

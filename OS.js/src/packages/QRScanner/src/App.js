@@ -53,10 +53,9 @@ export default class App extends Component {
             var canScan = false;
             axios.get('/apps/QrScanner/retrieve-privilege')
                 .then(response => {
-                    console.log("GET Response " + response);
-                    for (var i = 0; i < response.length; i++) {
-                        if (response[i].scannedBy === scannedBy) {
-                            if (response[i].canScan) {
+                    for (var i = 0; i < response.data.length; i++) {
+                        if (response.data[i].scannedBy === scannedBy) {
+                            if (response.data[i].canScan) {
                                 canScan = true;
                                 break;
                             }
