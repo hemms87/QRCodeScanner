@@ -47,24 +47,22 @@ export default class App extends Component {
         this.setState({ appState: 'Error' });
     }
 
-    handleScan = data => {
+    async handleScan(data) {
         if (data) {
             const [id, otp, userId, scannedBy, sessionId] = data.split('/');
             var canScan = false;
-            axios.get('/apps/QrScanner/retrieve-privilege')
-                .then(response => {
-                    for (var i = 0; i < response.data.length; i++) {
-                        if (response.data[i].scannedBy === scannedBy) {
-                            if (response.data[i].canScan) {
-                                canScan = true;
-                                break;
-                            }
+            let privilegeResponse = await axios.get('/apps/QRScanner/retrieve-privilege');
+            let responseBody = JSON.parse(privilegeResponse.data.response.body);
+            if (responseBody) {
+                for (var i = 0; i < responseBody.length; i++) {
+                    if (responseBody[i].UserId === scannedBy) {
+                        if (responseBody[i].CanScan) {
+                            canScan = true;
+                            break;
                         }
                     }
-                })
-                .catch((error) => {
-                    this.setState({ appSTATE: 'Error' })
-                });
+                }
+            }
             if (this.check(id, otp) == true && canScan) {
                 this.setState({
                     appSTATE: 'Result', currentID: id, currentOTP: otp,

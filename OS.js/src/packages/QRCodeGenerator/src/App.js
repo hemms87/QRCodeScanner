@@ -39,22 +39,6 @@ class App extends Component {
       isClicked: true, current_id: response.data.id, is_verified: stats, current_url: qr_url,
       sessionId: response.data.sessionId, userId: response.data.userId, scannedBy: scannedBy
     });
-    var canScan = false;
-    axios.get('/apps/QRCodeGenerator/retrieve-privilege')
-      .then(response => {
-        console.log("Get response " + JSON.stringify(response));
-        for (var i = 0; i < response.data.length; i++) {
-          if (response.data[i].scannedBy === scannedBy) {
-            if (response.data[i].canScan) {
-              canScan = true;
-              break;
-            }
-          }
-        }
-      })
-      .catch((error) => {
-        this.setState({ appSTATE: 'Error' })
-      });
     console.log(this.state);
   }
 
