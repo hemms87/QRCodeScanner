@@ -10,7 +10,6 @@ export default class App extends Component {
         this.handleError = this.handleError.bind(this);
         this.handleScan = this.handleScan.bind(this);
         this.handleVenueChange = this.handleVenueChange.bind(this);
-        this.handleModuleChange = this.handleModuleChange.bind(this);
         this.handleStartDateChange = this.handleStartDateChange.bind(this);
         this.handleEndDateChange = this.handleEndDateChange.bind(this);
         this.handleStartTimeChange = this.handleStartTimeChange.bind(this);
@@ -26,14 +25,14 @@ export default class App extends Component {
             currentUserId: null,
             currentScannedBy: null,
             currentSessionId: null,
+            currentModule: null,
             startDate: '',
             endDate: '',
             startTime: '',
             endTime: '',
             passOnPrivilege: false,
             canScan: false,
-            venue: '',
-            module: '',
+            venue: ''
         }
     }
 
@@ -49,13 +48,13 @@ export default class App extends Component {
 
     async handleScan(data) {
         if (data) {
-            const [id, otp, userId, scannedBy, sessionId] = data.split('/');
+            const [id, otp, userId, scannedBy, sessionId, module] = data.split('/');
             var canScan = false;
             let privilegeResponse = await axios.get('/apps/QRScanner/retrieve-privilege');
             let responseBody = JSON.parse(privilegeResponse.data.response.body);
             if (responseBody) {
                 for (var i = 0; i < responseBody.length; i++) {
-                    if (responseBody[i].UserId === scannedBy) {
+                    if (responseBody[i].UserId === scannedBy && responseBody[i].Module == module) {
                         if (responseBody[i].CanScan) {
                             canScan = true;
                             break;
@@ -66,7 +65,8 @@ export default class App extends Component {
             if (this.check(id, otp) == true && canScan) {
                 this.setState({
                     appSTATE: 'Result', currentID: id, currentOTP: otp,
-                    currentUserId: userId, currentScannedBy: scannedBy, currentSessionId: sessionId
+                    currentUserId: userId, currentScannedBy: scannedBy,
+                    currentSessionId: sessionId, currentModule: module
                 });
             } else if (this.check(id, otp) == true && !canScan) {
                 this.setState({ appSTATE: 'NoPrivilege' });
@@ -78,10 +78,6 @@ export default class App extends Component {
 
     handleVenueChange(event) {
         this.setState({ venue: event.target.value });
-    }
-
-    handleModuleChange(event) {
-        this.setState({ module: event.target.value });
     }
 
     handleStartDateChange(event) {
@@ -125,7 +121,7 @@ export default class App extends Component {
         const privilegeData = {
             userId: this.state.currentUserId,
             scannedBy: this.state.currentScannedBy,
-            module: this.state.module,
+            module: this.state.currentModule,
             venue: this.state.venue,
             startDate: this.state.startDate,
             endDate: this.state.endDate,
@@ -169,11 +165,6 @@ export default class App extends Component {
 
         else if (appState === "Result") {
             view = <form onSubmit={this.handleSubmit}>
-                <label>
-                    Module Code:
-                    <input type="text" value={this.state.module} onChange={this.handleModuleChange} />
-                </label>
-                <br />
                 <label>
                     Lab:
                     <input type="text" value={this.state.venue} onChange={this.handleVenueChange} />
@@ -229,6 +220,7 @@ export default class App extends Component {
                 <h2>An error occured during scanning</h2>
                 <p>Most likely cause of errors</p>
                 <ul>
+                    <li>Module Code did not match to the user who is trying to scan</li>
                     <li>This user does not have privileges to Scan the QR Code</li>
                 </ul>
                 <button onClick={this.handleClick}>Keep Scanning</button>

@@ -8,6 +8,7 @@ class App extends Component {
     this.createotp = this.createotp.bind(this);
     this.handleUserIdChange = this.handleUserIdChange.bind(this);
     this.handleScannedByChange = this.handleScannedByChange.bind(this);
+    this.handleModuleChange = this.handleModuleChange.bind(this);
     this.state = {
       current_url: '',
       current_id: '',
@@ -15,6 +16,7 @@ class App extends Component {
       is_verified: '',
       userId: '',
       scannedBy: '',
+      module: '',
       sessionId: '',
     }
   }
@@ -27,17 +29,23 @@ class App extends Component {
     this.setState({ scannedBy: event.target.value });
   }
 
+  handleModuleChange(event) {
+    this.setState({ module: event.target.value });
+  }
+
   async createotp() {
     var sessionId = '_' + Math.random().toString(36).substring(2, 9);
     var userId = this.state.userId;
     var scannedBy = this.state.scannedBy;
+    var module = this.state.module;
     let response = await axios.post('/apps/QRCodeGenerator/create-otp', { userId, sessionId, scannedBy });
     console.log(response);
     const stats = (response.data.isVerified === 'true');
-    const qr_url = response.data.id + '/' + response.data.otp + '/' + response.data.userId + '/' + response.data.scannedBy + '/' + response.data.sessionId;
+    const qr_url = response.data.id + '/' + response.data.otp + '/' + response.data.userId + '/' + response.data.scannedBy + '/' + response.data.sessionId + '/' + module;
     this.setState({
       isClicked: true, current_id: response.data.id, is_verified: stats, current_url: qr_url,
-      sessionId: response.data.sessionId, userId: response.data.userId, scannedBy: scannedBy
+      sessionId: response.data.sessionId, userId: response.data.userId, scannedBy: scannedBy,
+      module: module
     });
     console.log(this.state);
   }
@@ -48,9 +56,9 @@ class App extends Component {
 
     if (btnClicked) {
       view = <QrcodeView url={this.state.current_url} isVerified={this.state.is_verified} id={this.state.current_id}
-        userId={this.state.userId} sessionId={this.state.sessionId} scannedBy={this.state.scannedBy} />;
+        userId={this.state.userId} sessionId={this.state.sessionId} scannedBy={this.state.scannedBy}
+        module={this.state.module} />;
     }
-
     else {
       view = <div><label>
         User ID:
@@ -60,6 +68,11 @@ class App extends Component {
         <label>
           Scanned By:
           <input type="text" value={this.state.scannedBy} onChange={this.handleScannedByChange} />
+        </label>
+        <br />
+        <label>
+          Module:
+          <input type="text" value={this.state.module} onChange={this.handleModuleChange} />
         </label>
         <br />
         <button onClick={this.createotp}>Get QRCode</button>

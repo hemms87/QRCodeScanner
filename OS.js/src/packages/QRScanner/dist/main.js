@@ -39515,7 +39515,6 @@ var App = /*#__PURE__*/function (_Component) {
     _this.handleError = _this.handleError.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4___default()(_this));
     _this.handleScan = _this.handleScan.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4___default()(_this));
     _this.handleVenueChange = _this.handleVenueChange.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4___default()(_this));
-    _this.handleModuleChange = _this.handleModuleChange.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4___default()(_this));
     _this.handleStartDateChange = _this.handleStartDateChange.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4___default()(_this));
     _this.handleEndDateChange = _this.handleEndDateChange.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4___default()(_this));
     _this.handleStartTimeChange = _this.handleStartTimeChange.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_4___default()(_this));
@@ -39531,14 +39530,14 @@ var App = /*#__PURE__*/function (_Component) {
       currentUserId: null,
       currentScannedBy: null,
       currentSessionId: null,
+      currentModule: null,
       startDate: '',
       endDate: '',
       startTime: '',
       endTime: '',
       passOnPrivilege: false,
       canScan: false,
-      venue: '',
-      module: ''
+      venue: ''
     };
     return _this;
   }
@@ -39554,7 +39553,7 @@ var App = /*#__PURE__*/function (_Component) {
     key: "handleScan",
     value: function () {
       var _handleScan = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_9___default.a.mark(function _callee(data) {
-        var _data$split, _data$split2, id, otp, userId, scannedBy, sessionId, canScan, privilegeResponse, responseBody, i;
+        var _data$split, _data$split2, id, otp, userId, scannedBy, sessionId, module, canScan, privilegeResponse, responseBody, i;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_9___default.a.wrap(function _callee$(_context) {
           while (1) {
@@ -39565,7 +39564,7 @@ var App = /*#__PURE__*/function (_Component) {
                   break;
                 }
 
-                _data$split = data.split('/'), _data$split2 = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default()(_data$split, 5), id = _data$split2[0], otp = _data$split2[1], userId = _data$split2[2], scannedBy = _data$split2[3], sessionId = _data$split2[4];
+                _data$split = data.split('/'), _data$split2 = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default()(_data$split, 6), id = _data$split2[0], otp = _data$split2[1], userId = _data$split2[2], scannedBy = _data$split2[3], sessionId = _data$split2[4], module = _data$split2[5];
                 canScan = false;
                 _context.next = 5;
                 return axios__WEBPACK_IMPORTED_MODULE_11___default.a.get('/apps/QRScanner/retrieve-privilege');
@@ -39587,7 +39586,7 @@ var App = /*#__PURE__*/function (_Component) {
                   break;
                 }
 
-                if (!(responseBody[i].UserId === scannedBy)) {
+                if (!(responseBody[i].UserId === scannedBy && responseBody[i].Module == module)) {
                   _context.next = 14;
                   break;
                 }
@@ -39613,7 +39612,8 @@ var App = /*#__PURE__*/function (_Component) {
                     currentOTP: otp,
                     currentUserId: userId,
                     currentScannedBy: scannedBy,
-                    currentSessionId: sessionId
+                    currentSessionId: sessionId,
+                    currentModule: module
                   });
                 } else if (this.check(id, otp) == true && !canScan) {
                   this.setState({
@@ -39644,13 +39644,6 @@ var App = /*#__PURE__*/function (_Component) {
     value: function handleVenueChange(event) {
       this.setState({
         venue: event.target.value
-      });
-    }
-  }, {
-    key: "handleModuleChange",
-    value: function handleModuleChange(event) {
-      this.setState({
-        module: event.target.value
       });
     }
   }, {
@@ -39718,7 +39711,7 @@ var App = /*#__PURE__*/function (_Component) {
       var privilegeData = {
         userId: this.state.currentUserId,
         scannedBy: this.state.currentScannedBy,
-        module: this.state.module,
+        module: this.state.currentModule,
         venue: this.state.venue,
         startDate: this.state.startDate,
         endDate: this.state.endDate,
@@ -39769,11 +39762,7 @@ var App = /*#__PURE__*/function (_Component) {
       } else if (appState === "Result") {
         view = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("form", {
           onSubmit: this.handleSubmit
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("label", null, "Module Code:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("input", {
-          type: "text",
-          value: this.state.module,
-          onChange: this.handleModuleChange
-        })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("label", null, "Lab:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("input", {
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("label", null, "Lab:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("input", {
           type: "text",
           value: this.state.venue,
           onChange: this.handleVenueChange
@@ -39810,7 +39799,7 @@ var App = /*#__PURE__*/function (_Component) {
           value: "Verify"
         }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("br", null));
       } else if (appState === "NoPrivilege") {
-        view = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("h2", null, "An error occured during scanning"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("p", null, "Most likely cause of errors"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("ul", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("li", null, "This user does not have privileges to Scan the QR Code")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("button", {
+        view = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("h2", null, "An error occured during scanning"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("p", null, "Most likely cause of errors"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("ul", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("li", null, "Module Code did not match to the user who is trying to scan"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("li", null, "This user does not have privileges to Scan the QR Code")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("button", {
           onClick: this.handleClick
         }, "Keep Scanning"));
       } else {
