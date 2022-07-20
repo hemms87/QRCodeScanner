@@ -39559,7 +39559,7 @@ var App = /*#__PURE__*/function (_Component) {
     key: "handleScan",
     value: function () {
       var _handleScan = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_9___default.a.mark(function _callee(data) {
-        var _data$split, _data$split2, id, otp, userId, scannedBy, sessionId, module, dbStartDate, dbEndDate, dbStartTime, dbEndTime, dbLabName, canScan, passOnPrivilege, privilegeResponse, responseBody, i;
+        var _data$split, _data$split2, id, otp, userId, scannedBy, sessionId, module, dbStartDate, dbEndDate, dbStartTime, dbEndTime, dbLabName, canScan, passOnPrivilege, privilegeResponse, responseBody, i, studentWorkflow, validTimeStudent, systemTime, startDateTime, endDateTime;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_9___default.a.wrap(function _callee$(_context) {
           while (1) {
@@ -39634,21 +39634,43 @@ var App = /*#__PURE__*/function (_Component) {
 
               case 24:
                 if (this.check(id, otp) == true && canScan) {
-                  this.setState({
-                    appSTATE: 'Result',
-                    currentID: id,
-                    currentOTP: otp,
-                    currentUserId: userId,
-                    currentScannedBy: scannedBy,
-                    currentSessionId: sessionId,
-                    currentModule: module,
-                    passOnPrivilegeOfScanningUser: passOnPrivilege,
-                    dbStartDate: dbStartDate,
-                    dbEndDate: dbEndDate,
-                    dbStartTime: dbStartTime,
-                    dbEndTime: dbEndTime,
-                    dbLabName: dbLabName
-                  });
+                  //Student workflow
+                  studentWorkflow = false;
+                  validTimeStudent = true;
+
+                  if (dbStartDate != null && dbEndDate != null) {
+                    if (dbStartDate == dbEndDate && isToday(dbStartDate)) {
+                      studentWorkflow = true;
+                      systemTime = new Date();
+                      startDateTime = new Date(dbStartDate.slice(0, 10) + ' ' + dbStartTime);
+                      endDateTime = new Date(dbEndDate.slice(0, 10) + ' ' + dbEndTime);
+
+                      if (!(systemTime >= startDateTime && systemTime <= endDateTime)) {
+                        validTimeStudent = false;
+                        this.setState({
+                          appSTATE: 'StudentError'
+                        });
+                      }
+                    }
+                  }
+
+                  if (!studentWorkflow || studentWorkflow && validTimeStudent) {
+                    this.setState({
+                      appSTATE: 'Result',
+                      currentID: id,
+                      currentOTP: otp,
+                      currentUserId: userId,
+                      currentScannedBy: scannedBy,
+                      currentSessionId: sessionId,
+                      currentModule: module,
+                      passOnPrivilegeOfScanningUser: passOnPrivilege,
+                      dbStartDate: dbStartDate,
+                      dbEndDate: dbEndDate,
+                      dbStartTime: dbStartTime,
+                      dbEndTime: dbEndTime,
+                      dbLabName: dbLabName
+                    });
+                  }
                 } else if (this.check(id, otp) == true && !canScan) {
                   this.setState({
                     appSTATE: 'CannotScan'
@@ -39883,6 +39905,10 @@ var App = /*#__PURE__*/function (_Component) {
         view = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("h2", null, "An error occured during scanning"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("p", null, "Most likely cause of errors"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("ul", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("li", null, "Date does not fall in Start and End Date range of Head Demonstrator"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("li", null, "Start and End Time does not match with Head Demonstrator's"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("li", null, "Lab name does not match with Head Demonstrator's Lab Name")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("button", {
           onClick: this.handleClick
         }, "Keep Scanning"));
+      } else if (appState === "StudentError") {
+        view = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("h2", null, "An error occured during scanning"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("p", null, "Most likely cause of errors"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("ul", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("li", null, "Lab Time expired, or trying to scan early before the lab commences")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("button", {
+          onClick: this.handleClick
+        }, "Keep Scanning"));
       } else {
         view = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("h2", null, "An error occured during scanning"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("p", null, "Most likely cause of errors"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("ul", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("li", null, "Scanning the wrong QR code"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("li", null, "The QR code value has been changed from what was generated"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("li", null, "Network error")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("button", {
           onClick: this.handleClick
@@ -39897,6 +39923,11 @@ var App = /*#__PURE__*/function (_Component) {
 }(react__WEBPACK_IMPORTED_MODULE_10__["Component"]);
 
 
+
+function isToday(someDate) {
+  var today = new Date();
+  return new Date(someDate).getDate() == today.getDate() && new Date(someDate).getMonth() == today.getMonth() && new Date(someDate).getFullYear() == today.getFullYear();
+}
 
 /***/ }),
 

@@ -87,15 +87,32 @@ export default class App extends Component {
                 }
             }
             if (this.check(id, otp) == true && canScan) {
-                this.setState({
-                    appSTATE: 'Result', currentID: id, currentOTP: otp,
-                    currentUserId: userId, currentScannedBy: scannedBy,
-                    currentSessionId: sessionId, currentModule: module,
-                    passOnPrivilegeOfScanningUser: passOnPrivilege,
-                    dbStartDate: dbStartDate, dbEndDate: dbEndDate,
-                    dbStartTime: dbStartTime, dbEndTime: dbEndTime,
-                    dbLabName: dbLabName
-                });
+                //Student workflow
+                var studentWorkflow = false;
+                var validTimeStudent = true;
+                if (dbStartDate != null && dbEndDate != null) {
+                    if (dbStartDate == dbEndDate && isToday(dbStartDate)) {
+                        studentWorkflow = true;
+                        let systemTime = new Date();
+                        let startDateTime = new Date(dbStartDate.slice(0, 10) + ' ' + dbStartTime);
+                        let endDateTime = new Date(dbEndDate.slice(0, 10) + ' ' + dbEndTime);
+                        if (!(systemTime >= startDateTime && systemTime <= endDateTime)) {
+                            validTimeStudent = false;
+                            this.setState({ appSTATE: 'StudentError' });
+                        }
+                    }
+                }
+                if (!studentWorkflow || (studentWorkflow && validTimeStudent)) {
+                    this.setState({
+                        appSTATE: 'Result', currentID: id, currentOTP: otp,
+                        currentUserId: userId, currentScannedBy: scannedBy,
+                        currentSessionId: sessionId, currentModule: module,
+                        passOnPrivilegeOfScanningUser: passOnPrivilege,
+                        dbStartDate: dbStartDate, dbEndDate: dbEndDate,
+                        dbStartTime: dbStartTime, dbEndTime: dbEndTime,
+                        dbLabName: dbLabName
+                    });
+                }
             } else if (this.check(id, otp) == true && !canScan) {
                 this.setState({ appSTATE: 'CannotScan' });
             } else {
@@ -305,6 +322,15 @@ export default class App extends Component {
                 </ul>
                 <button onClick={this.handleClick}>Keep Scanning</button>
             </div>
+        } else if (appState === "StudentError") {
+            view = <div>
+                <h2>An error occured during scanning</h2>
+                <p>Most likely cause of errors</p>
+                <ul>
+                    <li>Lab Time expired, or trying to scan early before the lab commences</li>
+                </ul>
+                <button onClick={this.handleClick}>Keep Scanning</button>
+            </div>
         } else {
             view = <div>
                 <h2>An error occured during scanning</h2>
@@ -324,4 +350,11 @@ export default class App extends Component {
             </div>
         );
     }
+}
+
+function isToday(someDate) {
+    const today = new Date()
+    return new Date(someDate).getDate() == today.getDate() &&
+        new Date(someDate).getMonth() == today.getMonth() &&
+        new Date(someDate).getFullYear() == today.getFullYear();
 }
