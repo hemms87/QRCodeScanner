@@ -91,43 +91,37 @@ export default class App extends Component {
                 var studentWorkflow = false;
                 var validTimeStudent = true;
                 if (dbStartDate != null && dbEndDate != null) {
-                    if (dbStartDate == dbEndDate && isToday(dbStartDate)) {
+                    if (dbStartDate == dbEndDate) {
                         studentWorkflow = true;
                         let systemTime = new Date();
                         let startDateTime = new Date(dbStartDate.slice(0, 10) + ' ' + dbStartTime);
                         let endDateTime = new Date(dbEndDate.slice(0, 10) + ' ' + dbEndTime);
-                        if (!(systemTime >= startDateTime && systemTime <= endDateTime)) {
+                        if (!(systemTime >= startDateTime && systemTime <= endDateTime)
+                            || !isToday(dbStartDate)) {
                             validTimeStudent = false;
                             this.setState({ appSTATE: 'StudentError' });
                         }
                     }
                 }
                 if (studentWorkflow && validTimeStudent) {
-                    this.setState({
-                        appSTATE: 'StudentResult', currentID: id, currentOTP: otp,
-                        currentUserId: userId, currentScannedBy: scannedBy,
-                        currentSessionId: sessionId, currentModule: module,
-                        startDate: dbStartDate, endDate: dbEndDate,
-                        startTime: dbStartTime, endTime: dbEndTime,
-                        venue: dbLabName
-                    });
+                    this.setState({ appSTATE: 'StudentResult' });
                     const otpData = {
-                        userId: this.state.currentUserId,
-                        sessionId: this.state.currentSessionId,
-                        scannedBy: this.state.currentScannedBy,
-                        otp: this.state.currentOTP,
-                        id: this.state.currentID,
+                        userId: userId,
+                        sessionId: sessionId,
+                        scannedBy: scannedBy,
+                        otp: otp,
+                        id: id,
                     };
 
                     const privilegeData = {
-                        userId: this.state.currentUserId,
-                        scannedBy: this.state.currentScannedBy,
-                        module: this.state.currentModule,
-                        venue: this.state.venue,
-                        startDate: this.state.startDate,
-                        endDate: this.state.endDate,
-                        startTime: this.state.startTime,
-                        endTime: this.state.endTime,
+                        userId: userId,
+                        scannedBy: sessionId,
+                        module: module,
+                        venue: dbLabName,
+                        startDate: dbStartDate,
+                        endDate: dbEndDate,
+                        startTime: dbStartTime,
+                        endTime: dbEndTime,
                         passOnPrivilege: false,
                         canScan: false
                     };
