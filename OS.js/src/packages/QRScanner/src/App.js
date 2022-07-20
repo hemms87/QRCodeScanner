@@ -107,10 +107,9 @@ export default class App extends Component {
                         appSTATE: 'StudentResult', currentID: id, currentOTP: otp,
                         currentUserId: userId, currentScannedBy: scannedBy,
                         currentSessionId: sessionId, currentModule: module,
-                        passOnPrivilegeOfScanningUser: passOnPrivilege,
-                        dbStartDate: dbStartDate, dbEndDate: dbEndDate,
-                        dbStartTime: dbStartTime, dbEndTime: dbEndTime,
-                        dbLabName: dbLabName
+                        startDate: dbStartDate, endDate: dbEndDate,
+                        startTime: dbStartTime, endTime: dbEndTime,
+                        venue: dbLabName
                     });
                     this.handleStudentScan();
                 } else if (!studentWorkflow) {
@@ -345,7 +344,6 @@ export default class App extends Component {
         } else if (appState === "StudentResult") {
             view = <div>
                 <h2>Student logged in succesfully. Logged in student have access to the module resources</h2>
-                <button onClick={this.handleClick}>Keep Scanning</button>
             </div>
         } else if (appState === "CannotScan") {
             view = <div>

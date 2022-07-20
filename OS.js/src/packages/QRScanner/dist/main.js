@@ -39663,12 +39663,11 @@ var App = /*#__PURE__*/function (_Component) {
                       currentScannedBy: scannedBy,
                       currentSessionId: sessionId,
                       currentModule: module,
-                      passOnPrivilegeOfScanningUser: passOnPrivilege,
-                      dbStartDate: dbStartDate,
-                      dbEndDate: dbEndDate,
-                      dbStartTime: dbStartTime,
-                      dbEndTime: dbEndTime,
-                      dbLabName: dbLabName
+                      startDate: dbStartDate,
+                      endDate: dbEndDate,
+                      startTime: dbStartTime,
+                      endTime: dbEndTime,
+                      venue: dbLabName
                     });
                     this.handleStudentScan();
                   } else if (!studentWorkflow) {
@@ -39954,9 +39953,7 @@ var App = /*#__PURE__*/function (_Component) {
           value: "Verify"
         }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("br", null));
       } else if (appState === "StudentResult") {
-        view = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("h2", null, "Student logged in succesfully. Logged in student have access to the module resources"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("button", {
-          onClick: this.handleClick
-        }, "Keep Scanning"));
+        view = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("h2", null, "Student logged in succesfully. Logged in student have access to the module resources"));
       } else if (appState === "CannotScan") {
         view = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("h2", null, "An error occured during scanning"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("p", null, "Most likely cause of errors"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("ul", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("li", null, "Module Code did not match to the user who is trying to scan"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("li", null, "This user does not have privileges to Scan the QR Code")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("button", {
           onClick: this.handleClick
