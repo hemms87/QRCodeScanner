@@ -33,7 +33,12 @@ export default class App extends Component {
             endTime: '',
             passOnPrivilege: false,
             canScan: false,
-            venue: ''
+            venue: '',
+            dbStartDate: '',
+            dbEndDate: '',
+            dbStartTime: '',
+            dbEndTime: '',
+            dbLabName: ''
         }
     }
 
@@ -50,6 +55,7 @@ export default class App extends Component {
     async handleScan(data) {
         if (data) {
             const [id, otp, userId, scannedBy, sessionId, module] = data.split('/');
+            let dbStartDate, dbEndDate, dbStartTime, dbEndTime, dbLabName;
             var canScan = false;
             var passOnPrivilege = false;
             let privilegeResponse = await axios.get('/apps/QRScanner/retrieve-privilege');
@@ -57,6 +63,21 @@ export default class App extends Component {
             if (responseBody) {
                 for (var i = 0; i < responseBody.length; i++) {
                     if (responseBody[i].UserId === scannedBy && responseBody[i].Module == module) {
+                        if (responseBody[i].StartDate != null) {
+                            dbStartDate = responseBody[i].StartDate;
+                        }
+                        if (responseBody[i].EndDate != null) {
+                            dbEndDate = responseBody[i].EndDate;
+                        }
+                        if (responseBody[i].StartTime != null) {
+                            dbStartTime = responseBody[i].StartTime;
+                        }
+                        if (responseBody[i].EndTime != null) {
+                            dbEndTime = responseBody[i].EndTime;
+                        }
+                        if (responseBody[i].RoomName != null) {
+                            dbLabName = responseBody[i].RoomName;
+                        }
                         if (responseBody[i].CanScan) {
                             canScan = true;
                             passOnPrivilege = responseBody[i].PassOnPrivilege;
@@ -70,7 +91,10 @@ export default class App extends Component {
                     appSTATE: 'Result', currentID: id, currentOTP: otp,
                     currentUserId: userId, currentScannedBy: scannedBy,
                     currentSessionId: sessionId, currentModule: module,
-                    passOnPrivilegeOfScanningUser: passOnPrivilege
+                    passOnPrivilegeOfScanningUser: passOnPrivilege,
+                    dbStartDate: dbStartDate, dbEndDate: dbEndDate,
+                    dbStartTime: dbStartTime, dbEndTime: dbEndTime,
+                    dbLabName: dbLabName
                 });
             } else if (this.check(id, otp) == true && !canScan) {
                 this.setState({ appSTATE: 'CannotScan' });
@@ -134,26 +158,54 @@ export default class App extends Component {
             passOnPrivilege: this.state.passOnPrivilege,
             canScan: this.state.canScan
         };
-        if ((this.state.passOnPrivilege && this.state.passOnPrivilegeOfScanningUser)
-            || !this.state.passOnPrivilege) {
-            axios.put('/apps/QrScanner/update-otp', otpData)
-                .then(response => {
-                    console.log(response);
-                    this.setState({ appSTATE: 'Verification' });
-                })
-                .catch((error) => {
-                    this.setState({ appSTATE: 'Error' })
-                });
+        var validDatesChosen = false;
+        var validTimeChosen = false;
+        var validLabChosen = false;
+        var invalidDateOrTimeOrLab = false;
+        if (this.state.startDate == this.state.endDate) {
+            //Demonstrator workflow
+            if (this.state.dbStartDate != null && this.state.dbEndDate != null) {
+                if ((new Date(this.state.startDate) >= new Date(this.state.dbStartDate.slice(0, 10))
+                    && new Date(this.state.endDate) <= new Date(this.state.dbEndDate.slice(0, 10)))) {
+                    validDatesChosen = true;
+                }
+                if (this.state.dbStartTime != null && this.state.dbEndTime != null) {
+                    if (this.state.dbStartTime == this.state.startTime &&
+                        this.state.dbEndTime == this.state.endTime) {
+                        validTimeChosen = true;
+                    }
+                }
+                if (this.state.venue == this.state.dbLabName) {
+                    validLabChosen = true;
+                }
+            }
+            if (!(validDatesChosen && validTimeChosen && validLabChosen)) {
+                invalidDateOrTimeOrLab = true;
+                this.setState({ appSTATE: 'InvalidDateOrTimeOrLab' });
+            }
+        }
+        if (!invalidDateOrTimeOrLab) {
+            if ((this.state.passOnPrivilege && this.state.passOnPrivilegeOfScanningUser)
+                || !this.state.passOnPrivilege) {
+                axios.put('/apps/QrScanner/update-otp', otpData)
+                    .then(response => {
+                        console.log(response);
+                        this.setState({ appSTATE: 'Verification' });
+                    })
+                    .catch((error) => {
+                        this.setState({ appSTATE: 'Error' })
+                    });
 
-            axios.post('/apps/QrScanner/update-privilege', privilegeData)
-                .then(response => {
-                    console.log(response);
-                })
-                .catch((error) => {
-                    this.setState({ appSTATE: 'Error' })
-                });
-        } else {
-            this.setState({ appSTATE: 'CannotPassOnPrivilege' });
+                axios.post('/apps/QrScanner/update-privilege', privilegeData)
+                    .then(response => {
+                        console.log(response);
+                    })
+                    .catch((error) => {
+                        this.setState({ appSTATE: 'Error' })
+                    });
+            } else {
+                this.setState({ appSTATE: 'CannotPassOnPrivilege' });
+            }
         }
     }
 
@@ -239,6 +291,17 @@ export default class App extends Component {
                 <p>Most likely cause of errors</p>
                 <ul>
                     <li>No permissions to Pass on Privileges for the Scanning User</li>
+                </ul>
+                <button onClick={this.handleClick}>Keep Scanning</button>
+            </div>
+        } else if (appState === "InvalidDateOrTimeOrLab") {
+            view = <div>
+                <h2>An error occured during scanning</h2>
+                <p>Most likely cause of errors</p>
+                <ul>
+                    <li>Date does not fall in Start and End Date range of Head Demonstrator</li>
+                    <li>Start and End Time does not match with Head Demonstrator's</li>
+                    <li>Lab name does not match with Head Demonstrator's Lab Name</li>
                 </ul>
                 <button onClick={this.handleClick}>Keep Scanning</button>
             </div>

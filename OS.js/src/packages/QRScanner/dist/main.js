@@ -39538,7 +39538,12 @@ var App = /*#__PURE__*/function (_Component) {
       endTime: '',
       passOnPrivilege: false,
       canScan: false,
-      venue: ''
+      venue: '',
+      dbStartDate: '',
+      dbEndDate: '',
+      dbStartTime: '',
+      dbEndTime: '',
+      dbLabName: ''
     };
     return _this;
   }
@@ -39554,14 +39559,14 @@ var App = /*#__PURE__*/function (_Component) {
     key: "handleScan",
     value: function () {
       var _handleScan = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_9___default.a.mark(function _callee(data) {
-        var _data$split, _data$split2, id, otp, userId, scannedBy, sessionId, module, canScan, passOnPrivilege, privilegeResponse, responseBody, i;
+        var _data$split, _data$split2, id, otp, userId, scannedBy, sessionId, module, dbStartDate, dbEndDate, dbStartTime, dbEndTime, dbLabName, canScan, passOnPrivilege, privilegeResponse, responseBody, i;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_9___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 if (!data) {
-                  _context.next = 20;
+                  _context.next = 25;
                   break;
                 }
 
@@ -39576,7 +39581,7 @@ var App = /*#__PURE__*/function (_Component) {
                 responseBody = JSON.parse(privilegeResponse.data.response.body);
 
                 if (!responseBody) {
-                  _context.next = 19;
+                  _context.next = 24;
                   break;
                 }
 
@@ -39584,30 +39589,50 @@ var App = /*#__PURE__*/function (_Component) {
 
               case 10:
                 if (!(i < responseBody.length)) {
-                  _context.next = 19;
+                  _context.next = 24;
                   break;
                 }
 
                 if (!(responseBody[i].UserId === scannedBy && responseBody[i].Module == module)) {
-                  _context.next = 16;
+                  _context.next = 21;
                   break;
                 }
 
+                if (responseBody[i].StartDate != null) {
+                  dbStartDate = responseBody[i].StartDate;
+                }
+
+                if (responseBody[i].EndDate != null) {
+                  dbEndDate = responseBody[i].EndDate;
+                }
+
+                if (responseBody[i].StartTime != null) {
+                  dbStartTime = responseBody[i].StartTime;
+                }
+
+                if (responseBody[i].EndTime != null) {
+                  dbEndTime = responseBody[i].EndTime;
+                }
+
+                if (responseBody[i].RoomName != null) {
+                  dbLabName = responseBody[i].RoomName;
+                }
+
                 if (!responseBody[i].CanScan) {
-                  _context.next = 16;
+                  _context.next = 21;
                   break;
                 }
 
                 canScan = true;
                 passOnPrivilege = responseBody[i].PassOnPrivilege;
-                return _context.abrupt("break", 19);
+                return _context.abrupt("break", 24);
 
-              case 16:
+              case 21:
                 i++;
                 _context.next = 10;
                 break;
 
-              case 19:
+              case 24:
                 if (this.check(id, otp) == true && canScan) {
                   this.setState({
                     appSTATE: 'Result',
@@ -39617,7 +39642,12 @@ var App = /*#__PURE__*/function (_Component) {
                     currentScannedBy: scannedBy,
                     currentSessionId: sessionId,
                     currentModule: module,
-                    passOnPrivilegeOfScanningUser: passOnPrivilege
+                    passOnPrivilegeOfScanningUser: passOnPrivilege,
+                    dbStartDate: dbStartDate,
+                    dbEndDate: dbEndDate,
+                    dbStartTime: dbStartTime,
+                    dbEndTime: dbEndTime,
+                    dbLabName: dbLabName
                   });
                 } else if (this.check(id, otp) == true && !canScan) {
                   this.setState({
@@ -39629,7 +39659,7 @@ var App = /*#__PURE__*/function (_Component) {
                   });
                 }
 
-              case 20:
+              case 25:
               case "end":
                 return _context.stop();
             }
@@ -39724,30 +39754,62 @@ var App = /*#__PURE__*/function (_Component) {
         passOnPrivilege: this.state.passOnPrivilege,
         canScan: this.state.canScan
       };
+      var validDatesChosen = false;
+      var validTimeChosen = false;
+      var validLabChosen = false;
+      var invalidDateOrTimeOrLab = false;
 
-      if (this.state.passOnPrivilege && this.state.passOnPrivilegeOfScanningUser || !this.state.passOnPrivilege) {
-        axios__WEBPACK_IMPORTED_MODULE_11___default.a.put('/apps/QrScanner/update-otp', otpData).then(function (response) {
-          console.log(response);
+      if (this.state.startDate == this.state.endDate) {
+        //Demonstrator workflow
+        if (this.state.dbStartDate != null && this.state.dbEndDate != null) {
+          if (new Date(this.state.startDate) >= new Date(this.state.dbStartDate.slice(0, 10)) && new Date(this.state.endDate) <= new Date(this.state.dbEndDate.slice(0, 10))) {
+            validDatesChosen = true;
+          }
 
-          _this2.setState({
-            appSTATE: 'Verification'
+          if (this.state.dbStartTime != null && this.state.dbEndTime != null) {
+            if (this.state.dbStartTime == this.state.startTime && this.state.dbEndTime == this.state.endTime) {
+              validTimeChosen = true;
+            }
+          }
+
+          if (this.state.venue == this.state.dbLabName) {
+            validLabChosen = true;
+          }
+        }
+
+        if (!(validDatesChosen && validTimeChosen && validLabChosen)) {
+          invalidDateOrTimeOrLab = true;
+          this.setState({
+            appSTATE: 'InvalidDateOrTimeOrLab'
           });
-        })["catch"](function (error) {
-          _this2.setState({
-            appSTATE: 'Error'
+        }
+      }
+
+      if (!invalidDateOrTimeOrLab) {
+        if (this.state.passOnPrivilege && this.state.passOnPrivilegeOfScanningUser || !this.state.passOnPrivilege) {
+          axios__WEBPACK_IMPORTED_MODULE_11___default.a.put('/apps/QrScanner/update-otp', otpData).then(function (response) {
+            console.log(response);
+
+            _this2.setState({
+              appSTATE: 'Verification'
+            });
+          })["catch"](function (error) {
+            _this2.setState({
+              appSTATE: 'Error'
+            });
           });
-        });
-        axios__WEBPACK_IMPORTED_MODULE_11___default.a.post('/apps/QrScanner/update-privilege', privilegeData).then(function (response) {
-          console.log(response);
-        })["catch"](function (error) {
-          _this2.setState({
-            appSTATE: 'Error'
+          axios__WEBPACK_IMPORTED_MODULE_11___default.a.post('/apps/QrScanner/update-privilege', privilegeData).then(function (response) {
+            console.log(response);
+          })["catch"](function (error) {
+            _this2.setState({
+              appSTATE: 'Error'
+            });
           });
-        });
-      } else {
-        this.setState({
-          appSTATE: 'CannotPassOnPrivilege'
-        });
+        } else {
+          this.setState({
+            appSTATE: 'CannotPassOnPrivilege'
+          });
+        }
       }
     }
   }, {
@@ -39815,6 +39877,10 @@ var App = /*#__PURE__*/function (_Component) {
         }, "Keep Scanning"));
       } else if (appState === "CannotPassOnPrivilege") {
         view = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("h2", null, "An error occured during scanning"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("p", null, "Most likely cause of errors"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("ul", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("li", null, "No permissions to Pass on Privileges for the Scanning User")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("button", {
+          onClick: this.handleClick
+        }, "Keep Scanning"));
+      } else if (appState === "InvalidDateOrTimeOrLab") {
+        view = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("h2", null, "An error occured during scanning"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("p", null, "Most likely cause of errors"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("ul", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("li", null, "Date does not fall in Start and End Date range of Head Demonstrator"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("li", null, "Start and End Time does not match with Head Demonstrator's"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("li", null, "Lab name does not match with Head Demonstrator's Lab Name")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("button", {
           onClick: this.handleClick
         }, "Keep Scanning"));
       } else {
