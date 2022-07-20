@@ -111,7 +111,42 @@ export default class App extends Component {
                         startTime: dbStartTime, endTime: dbEndTime,
                         venue: dbLabName
                     });
-                    this.handleStudentScan(event);
+                    const otpData = {
+                        userId: this.state.currentUserId,
+                        sessionId: this.state.currentSessionId,
+                        scannedBy: this.state.currentScannedBy,
+                        otp: this.state.currentOTP,
+                        id: this.state.currentID,
+                    };
+
+                    const privilegeData = {
+                        userId: this.state.currentUserId,
+                        scannedBy: this.state.currentScannedBy,
+                        module: this.state.currentModule,
+                        venue: this.state.venue,
+                        startDate: this.state.startDate,
+                        endDate: this.state.endDate,
+                        startTime: this.state.startTime,
+                        endTime: this.state.endTime,
+                        passOnPrivilege: false,
+                        canScan: false
+                    };
+                    axios.put('/apps/QrScanner/update-otp', otpData)
+                        .then(response => {
+                            console.log(response);
+                            this.setState({ appSTATE: 'Verification' });
+                        })
+                        .catch((error) => {
+                            this.setState({ appSTATE: 'Error' })
+                        });
+
+                    axios.post('/apps/QrScanner/update-privilege', privilegeData)
+                        .then(response => {
+                            console.log(response);
+                        })
+                        .catch((error) => {
+                            this.setState({ appSTATE: 'Error' })
+                        });
                 } else if (!studentWorkflow) {
                     this.setState({
                         appSTATE: 'Result', currentID: id, currentOTP: otp,
@@ -234,46 +269,6 @@ export default class App extends Component {
                 this.setState({ appSTATE: 'CannotPassOnPrivilege' });
             }
         }
-    }
-
-    handleStudentScan(event) {
-        event.preventDefault();
-        const otpData = {
-            userId: this.state.currentUserId,
-            sessionId: this.state.currentSessionId,
-            scannedBy: this.state.currentScannedBy,
-            otp: this.state.currentOTP,
-            id: this.state.currentID,
-        };
-
-        const privilegeData = {
-            userId: this.state.currentUserId,
-            scannedBy: this.state.currentScannedBy,
-            module: this.state.currentModule,
-            venue: this.state.venue,
-            startDate: this.state.startDate,
-            endDate: this.state.endDate,
-            startTime: this.state.startTime,
-            endTime: this.state.endTime,
-            passOnPrivilege: false,
-            canScan: false
-        };
-        axios.put('/apps/QrScanner/update-otp', otpData)
-            .then(response => {
-                console.log(response);
-                this.setState({ appSTATE: 'Verification' });
-            })
-            .catch((error) => {
-                this.setState({ appSTATE: 'Error' })
-            });
-
-        axios.post('/apps/QrScanner/update-privilege', privilegeData)
-            .then(response => {
-                console.log(response);
-            })
-            .catch((error) => {
-                this.setState({ appSTATE: 'Error' })
-            });
     }
 
     render() {

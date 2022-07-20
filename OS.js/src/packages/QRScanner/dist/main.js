@@ -39559,7 +39559,9 @@ var App = /*#__PURE__*/function (_Component) {
     key: "handleScan",
     value: function () {
       var _handleScan = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_9___default.a.mark(function _callee(data) {
-        var _data$split, _data$split2, id, otp, userId, scannedBy, sessionId, module, dbStartDate, dbEndDate, dbStartTime, dbEndTime, dbLabName, canScan, passOnPrivilege, privilegeResponse, responseBody, i, studentWorkflow, validTimeStudent, systemTime, startDateTime, endDateTime;
+        var _this2 = this;
+
+        var _data$split, _data$split2, id, otp, userId, scannedBy, sessionId, module, dbStartDate, dbEndDate, dbStartTime, dbEndTime, dbLabName, canScan, passOnPrivilege, privilegeResponse, responseBody, i, studentWorkflow, validTimeStudent, systemTime, startDateTime, endDateTime, otpData, privilegeData;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_9___default.a.wrap(function _callee$(_context) {
           while (1) {
@@ -39669,7 +39671,43 @@ var App = /*#__PURE__*/function (_Component) {
                       endTime: dbEndTime,
                       venue: dbLabName
                     });
-                    this.handleStudentScan(event);
+                    otpData = {
+                      userId: this.state.currentUserId,
+                      sessionId: this.state.currentSessionId,
+                      scannedBy: this.state.currentScannedBy,
+                      otp: this.state.currentOTP,
+                      id: this.state.currentID
+                    };
+                    privilegeData = {
+                      userId: this.state.currentUserId,
+                      scannedBy: this.state.currentScannedBy,
+                      module: this.state.currentModule,
+                      venue: this.state.venue,
+                      startDate: this.state.startDate,
+                      endDate: this.state.endDate,
+                      startTime: this.state.startTime,
+                      endTime: this.state.endTime,
+                      passOnPrivilege: false,
+                      canScan: false
+                    };
+                    axios__WEBPACK_IMPORTED_MODULE_11___default.a.put('/apps/QrScanner/update-otp', otpData).then(function (response) {
+                      console.log(response);
+
+                      _this2.setState({
+                        appSTATE: 'Verification'
+                      });
+                    })["catch"](function (error) {
+                      _this2.setState({
+                        appSTATE: 'Error'
+                      });
+                    });
+                    axios__WEBPACK_IMPORTED_MODULE_11___default.a.post('/apps/QrScanner/update-privilege', privilegeData).then(function (response) {
+                      console.log(response);
+                    })["catch"](function (error) {
+                      _this2.setState({
+                        appSTATE: 'Error'
+                      });
+                    });
                   } else if (!studentWorkflow) {
                     this.setState({
                       appSTATE: 'Result',
@@ -39770,7 +39808,7 @@ var App = /*#__PURE__*/function (_Component) {
   }, {
     key: "handleSubmit",
     value: function handleSubmit(event) {
-      var _this2 = this;
+      var _this3 = this;
 
       event.preventDefault();
       var otpData = {
@@ -39828,18 +39866,18 @@ var App = /*#__PURE__*/function (_Component) {
           axios__WEBPACK_IMPORTED_MODULE_11___default.a.put('/apps/QrScanner/update-otp', otpData).then(function (response) {
             console.log(response);
 
-            _this2.setState({
+            _this3.setState({
               appSTATE: 'Verification'
             });
           })["catch"](function (error) {
-            _this2.setState({
+            _this3.setState({
               appSTATE: 'Error'
             });
           });
           axios__WEBPACK_IMPORTED_MODULE_11___default.a.post('/apps/QrScanner/update-privilege', privilegeData).then(function (response) {
             console.log(response);
           })["catch"](function (error) {
-            _this2.setState({
+            _this3.setState({
               appSTATE: 'Error'
             });
           });
@@ -39849,50 +39887,6 @@ var App = /*#__PURE__*/function (_Component) {
           });
         }
       }
-    }
-  }, {
-    key: "handleStudentScan",
-    value: function handleStudentScan(event) {
-      var _this3 = this;
-
-      event.preventDefault();
-      var otpData = {
-        userId: this.state.currentUserId,
-        sessionId: this.state.currentSessionId,
-        scannedBy: this.state.currentScannedBy,
-        otp: this.state.currentOTP,
-        id: this.state.currentID
-      };
-      var privilegeData = {
-        userId: this.state.currentUserId,
-        scannedBy: this.state.currentScannedBy,
-        module: this.state.currentModule,
-        venue: this.state.venue,
-        startDate: this.state.startDate,
-        endDate: this.state.endDate,
-        startTime: this.state.startTime,
-        endTime: this.state.endTime,
-        passOnPrivilege: false,
-        canScan: false
-      };
-      axios__WEBPACK_IMPORTED_MODULE_11___default.a.put('/apps/QrScanner/update-otp', otpData).then(function (response) {
-        console.log(response);
-
-        _this3.setState({
-          appSTATE: 'Verification'
-        });
-      })["catch"](function (error) {
-        _this3.setState({
-          appSTATE: 'Error'
-        });
-      });
-      axios__WEBPACK_IMPORTED_MODULE_11___default.a.post('/apps/QrScanner/update-privilege', privilegeData).then(function (response) {
-        console.log(response);
-      })["catch"](function (error) {
-        _this3.setState({
-          appSTATE: 'Error'
-        });
-      });
     }
   }, {
     key: "render",
