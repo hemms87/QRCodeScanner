@@ -102,7 +102,7 @@ export default class App extends Component {
                         }
                     }
                 }
-                if (!studentWorkflow || (studentWorkflow && validTimeStudent)) {
+                if (!studentWorkflow || (studentWorkflow && !validTimeStudent)) {
                     this.setState({
                         appSTATE: 'Result', currentID: id, currentOTP: otp,
                         currentUserId: userId, currentScannedBy: scannedBy,
