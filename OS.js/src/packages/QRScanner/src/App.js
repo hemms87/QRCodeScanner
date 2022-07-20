@@ -102,7 +102,18 @@ export default class App extends Component {
                         }
                     }
                 }
-                if (!studentWorkflow || (studentWorkflow && !validTimeStudent)) {
+                if (studentWorkflow && validTimeStudent) {
+                    this.setState({
+                        appSTATE: 'StudentResult', currentID: id, currentOTP: otp,
+                        currentUserId: userId, currentScannedBy: scannedBy,
+                        currentSessionId: sessionId, currentModule: module,
+                        passOnPrivilegeOfScanningUser: passOnPrivilege,
+                        dbStartDate: dbStartDate, dbEndDate: dbEndDate,
+                        dbStartTime: dbStartTime, dbEndTime: dbEndTime,
+                        dbLabName: dbLabName
+                    });
+                    this.handleStudentScan();
+                } else if (!studentWorkflow) {
                     this.setState({
                         appSTATE: 'Result', currentID: id, currentOTP: otp,
                         currentUserId: userId, currentScannedBy: scannedBy,
@@ -226,6 +237,45 @@ export default class App extends Component {
         }
     }
 
+    handleStudentScan() {
+        const otpData = {
+            userId: this.state.currentUserId,
+            sessionId: this.state.currentSessionId,
+            scannedBy: this.state.currentScannedBy,
+            otp: this.state.currentOTP,
+            id: this.state.currentID,
+        };
+
+        const privilegeData = {
+            userId: this.state.currentUserId,
+            scannedBy: this.state.currentScannedBy,
+            module: this.state.currentModule,
+            venue: this.state.venue,
+            startDate: this.state.startDate,
+            endDate: this.state.endDate,
+            startTime: this.state.startTime,
+            endTime: this.state.endTime,
+            passOnPrivilege: false,
+            canScan: false
+        };
+        axios.put('/apps/QrScanner/update-otp', otpData)
+            .then(response => {
+                console.log(response);
+                this.setState({ appSTATE: 'Verification' });
+            })
+            .catch((error) => {
+                this.setState({ appSTATE: 'Error' })
+            });
+
+        axios.post('/apps/QrScanner/update-privilege', privilegeData)
+            .then(response => {
+                console.log(response);
+            })
+            .catch((error) => {
+                this.setState({ appSTATE: 'Error' })
+            });
+    }
+
     render() {
         const appState = this.state.appSTATE;
         let view;
@@ -292,6 +342,11 @@ export default class App extends Component {
                 <input type="submit" value="Verify" />
                 <br />
             </form>
+        } else if (appState === "StudentResult") {
+            view = <div>
+                <h2>Student logged in succesfully. Logged in student have access to the module resources</h2>
+                <button onClick={this.handleClick}>Keep Scanning</button>
+            </div>
         } else if (appState === "CannotScan") {
             view = <div>
                 <h2>An error occured during scanning</h2>

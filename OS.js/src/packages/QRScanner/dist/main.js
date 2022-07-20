@@ -39654,7 +39654,24 @@ var App = /*#__PURE__*/function (_Component) {
                     }
                   }
 
-                  if (!studentWorkflow || studentWorkflow && !validTimeStudent) {
+                  if (studentWorkflow && validTimeStudent) {
+                    this.setState({
+                      appSTATE: 'StudentResult',
+                      currentID: id,
+                      currentOTP: otp,
+                      currentUserId: userId,
+                      currentScannedBy: scannedBy,
+                      currentSessionId: sessionId,
+                      currentModule: module,
+                      passOnPrivilegeOfScanningUser: passOnPrivilege,
+                      dbStartDate: dbStartDate,
+                      dbEndDate: dbEndDate,
+                      dbStartTime: dbStartTime,
+                      dbEndTime: dbEndTime,
+                      dbLabName: dbLabName
+                    });
+                    this.handleStudentScan();
+                  } else if (!studentWorkflow) {
                     this.setState({
                       appSTATE: 'Result',
                       currentID: id,
@@ -39835,6 +39852,49 @@ var App = /*#__PURE__*/function (_Component) {
       }
     }
   }, {
+    key: "handleStudentScan",
+    value: function handleStudentScan() {
+      var _this3 = this;
+
+      var otpData = {
+        userId: this.state.currentUserId,
+        sessionId: this.state.currentSessionId,
+        scannedBy: this.state.currentScannedBy,
+        otp: this.state.currentOTP,
+        id: this.state.currentID
+      };
+      var privilegeData = {
+        userId: this.state.currentUserId,
+        scannedBy: this.state.currentScannedBy,
+        module: this.state.currentModule,
+        venue: this.state.venue,
+        startDate: this.state.startDate,
+        endDate: this.state.endDate,
+        startTime: this.state.startTime,
+        endTime: this.state.endTime,
+        passOnPrivilege: false,
+        canScan: false
+      };
+      axios__WEBPACK_IMPORTED_MODULE_11___default.a.put('/apps/QrScanner/update-otp', otpData).then(function (response) {
+        console.log(response);
+
+        _this3.setState({
+          appSTATE: 'Verification'
+        });
+      })["catch"](function (error) {
+        _this3.setState({
+          appSTATE: 'Error'
+        });
+      });
+      axios__WEBPACK_IMPORTED_MODULE_11___default.a.post('/apps/QrScanner/update-privilege', privilegeData).then(function (response) {
+        console.log(response);
+      })["catch"](function (error) {
+        _this3.setState({
+          appSTATE: 'Error'
+        });
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
       var appState = this.state.appSTATE;
@@ -39893,6 +39953,10 @@ var App = /*#__PURE__*/function (_Component) {
           type: "submit",
           value: "Verify"
         }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("br", null));
+      } else if (appState === "StudentResult") {
+        view = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("h2", null, "Student logged in succesfully. Logged in student have access to the module resources"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("button", {
+          onClick: this.handleClick
+        }, "Keep Scanning"));
       } else if (appState === "CannotScan") {
         view = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("h2", null, "An error occured during scanning"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("p", null, "Most likely cause of errors"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("ul", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("li", null, "Module Code did not match to the user who is trying to scan"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("li", null, "This user does not have privileges to Scan the QR Code")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("button", {
           onClick: this.handleClick
