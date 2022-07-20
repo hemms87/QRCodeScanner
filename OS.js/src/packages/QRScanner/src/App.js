@@ -111,7 +111,7 @@ export default class App extends Component {
                         startTime: dbStartTime, endTime: dbEndTime,
                         venue: dbLabName
                     });
-                    this.handleStudentScan();
+                    this.handleStudentScan(event);
                 } else if (!studentWorkflow) {
                     this.setState({
                         appSTATE: 'Result', currentID: id, currentOTP: otp,
@@ -236,7 +236,8 @@ export default class App extends Component {
         }
     }
 
-    handleStudentScan() {
+    handleStudentScan(event) {
+        event.preventDefault();
         const otpData = {
             userId: this.state.currentUserId,
             sessionId: this.state.currentSessionId,

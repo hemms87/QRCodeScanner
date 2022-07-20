@@ -39669,7 +39669,7 @@ var App = /*#__PURE__*/function (_Component) {
                       endTime: dbEndTime,
                       venue: dbLabName
                     });
-                    this.handleStudentScan();
+                    this.handleStudentScan(event);
                   } else if (!studentWorkflow) {
                     this.setState({
                       appSTATE: 'Result',
@@ -39852,9 +39852,10 @@ var App = /*#__PURE__*/function (_Component) {
     }
   }, {
     key: "handleStudentScan",
-    value: function handleStudentScan() {
+    value: function handleStudentScan(event) {
       var _this3 = this;
 
+      event.preventDefault();
       var otpData = {
         userId: this.state.currentUserId,
         sessionId: this.state.currentSessionId,
