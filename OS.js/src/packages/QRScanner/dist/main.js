@@ -39639,11 +39639,11 @@ var App = /*#__PURE__*/function (_Component) {
                       userId: userId,
                       scannedBy: scannedBy,
                       module: module,
-                      venue: dbLabName,
-                      startDate: dbStartDate,
-                      endDate: dbEndDate,
-                      startTime: dbStartTime,
-                      endTime: dbEndTime,
+                      venue: scannedUserDetails.dbLabName,
+                      startDate: scannedUserDetails.dbStartDate,
+                      endDate: scannedUserDetails.dbEndDate,
+                      startTime: scannedUserDetails.dbStartTime,
+                      endTime: scannedUserDetails.dbEndTime,
                       passOnPrivilege: false,
                       canScan: false
                     };
@@ -39675,11 +39675,11 @@ var App = /*#__PURE__*/function (_Component) {
                       currentSessionId: sessionId,
                       currentModule: module,
                       passOnPrivilegeOfScanningUser: passOnPrivilege,
-                      dbStartDate: dbStartDate,
-                      dbEndDate: dbEndDate,
-                      dbStartTime: dbStartTime,
-                      dbEndTime: dbEndTime,
-                      dbLabName: dbLabName
+                      dbStartDate: scannedUserDetails.dbStartDate,
+                      dbEndDate: scannedUserDetails.dbEndDate,
+                      dbStartTime: scannedUserDetails.dbStartTime,
+                      dbEndTime: scannedUserDetails.dbEndTime,
+                      dbLabName: scannedUserDetails.dbLabName
                     });
                   }
                 } else {
