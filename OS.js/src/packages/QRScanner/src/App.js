@@ -55,105 +55,90 @@ export default class App extends Component {
     async handleScan(data) {
         if (data) {
             const [id, otp, userId, scannedBy, sessionId, module] = data.split('/');
-            let dbStartDate, dbEndDate, dbStartTime, dbEndTime, dbLabName;
-            var canScan = false;
-            var passOnPrivilege = false;
-            let privilegeResponse = await axios.get('/apps/QRScanner/retrieve-privilege');
-            let responseBody = JSON.parse(privilegeResponse.data.response.body);
-            if (responseBody) {
-                for (var i = 0; i < responseBody.length; i++) {
-                    if (responseBody[i].UserId === scannedBy && responseBody[i].Module == module) {
-                        if (responseBody[i].StartDate != null) {
-                            dbStartDate = responseBody[i].StartDate;
-                        }
-                        if (responseBody[i].EndDate != null) {
-                            dbEndDate = responseBody[i].EndDate;
-                        }
-                        if (responseBody[i].StartTime != null) {
-                            dbStartTime = responseBody[i].StartTime;
-                        }
-                        if (responseBody[i].EndTime != null) {
-                            dbEndTime = responseBody[i].EndTime;
-                        }
-                        if (responseBody[i].RoomName != null) {
-                            dbLabName = responseBody[i].RoomName;
-                        }
-                        if (responseBody[i].CanScan) {
-                            canScan = true;
-                            passOnPrivilege = responseBody[i].PassOnPrivilege;
-                            break;
-                        }
-                    }
+            //First check if QR code is valid, if invalid throw error
+            //If QR is valid check if it is already verified or not
+            //If both are true, then start processing
+            if (this.check(id, otp) == true) {
+                let qrData = {
+                    id: id,
                 }
-            }
-            if (this.check(id, otp) == true && canScan) {
-                //Student workflow
-                var studentWorkflow = false;
-                var validTimeStudent = true;
-                if (dbStartDate != null && dbEndDate != null) {
-                    if (dbStartDate == dbEndDate) {
-                        studentWorkflow = true;
-                        let systemTime = new Date();
-                        let startDateTime = new Date(dbStartDate.slice(0, 10) + ' ' + dbStartTime);
-                        let endDateTime = new Date(dbEndDate.slice(0, 10) + ' ' + dbEndTime);
-                        if (!(systemTime >= startDateTime && systemTime <= endDateTime)
-                            || !isToday(dbStartDate)) {
-                            validTimeStudent = false;
-                            this.setState({ appSTATE: 'StudentError' });
+                let response = await axios.post('/apps/QRCodeGenerator/get-items', qrData);
+                if (!response.data.isVerified) {
+                    let privilegeResponse = await axios.get('/apps/QRScanner/retrieve-privilege');
+                    let responseBody = JSON.parse(privilegeResponse.data.response.body);
+                    let scannedUserDetails = getScannedUserDetails(responseBody, scannedBy, module);
+                    if (scannedUserDetails.canScan) {
+                        //Student workflow
+                        var studentWorkflow = false;
+                        var validTimeStudent = true;
+                        if (scannedUserDetails.dbStartDate != null && scannedUserDetails.dbEndDate != null) {
+                            if (scannedUserDetails.dbStartDate == scannedUserDetails.dbEndDate) {
+                                studentWorkflow = true;
+                                let systemTime = new Date();
+                                let startDateTime = new Date(scannedUserDetails.dbStartDate.slice(0, 10) + ' ' + scannedUserDetails.dbStartTime);
+                                let endDateTime = new Date(scannedUserDetails.dbEndDate.slice(0, 10) + ' ' + scannedUserDetails.dbEndTime);
+                                if (!(systemTime >= startDateTime && systemTime <= endDateTime)
+                                    || !isToday(scannedUserDetails.dbStartDate)) {
+                                    validTimeStudent = false;
+                                    this.setState({ appSTATE: 'StudentError' });
+                                }
+                            }
                         }
-                    }
-                }
-                if (studentWorkflow && validTimeStudent && this.state.appSTATE != "StudentResult") {
-                    this.setState({ appSTATE: 'StudentResult' });
-                    const otpData = {
-                        userId: userId,
-                        sessionId: sessionId,
-                        scannedBy: scannedBy,
-                        otp: otp,
-                        id: id,
-                    };
+                        if (studentWorkflow && validTimeStudent) {
+                            this.setState({ appSTATE: 'StudentResult' });
+                            const otpData = {
+                                userId: userId,
+                                sessionId: sessionId,
+                                scannedBy: scannedBy,
+                                otp: otp,
+                                id: id,
+                            };
 
-                    const privilegeData = {
-                        userId: userId,
-                        scannedBy: scannedBy,
-                        module: module,
-                        venue: dbLabName,
-                        startDate: dbStartDate,
-                        endDate: dbEndDate,
-                        startTime: dbStartTime,
-                        endTime: dbEndTime,
-                        passOnPrivilege: false,
-                        canScan: false
-                    };
-                    axios.put('/apps/QrScanner/update-otp', otpData)
-                        .then(response => {
-                            console.log(response);
-                            this.setState({ appSTATE: 'Verification' });
-                        })
-                        .catch((error) => {
-                            this.setState({ appSTATE: 'Error' })
-                        });
+                            const privilegeData = {
+                                userId: userId,
+                                scannedBy: scannedBy,
+                                module: module,
+                                venue: dbLabName,
+                                startDate: dbStartDate,
+                                endDate: dbEndDate,
+                                startTime: dbStartTime,
+                                endTime: dbEndTime,
+                                passOnPrivilege: false,
+                                canScan: false
+                            };
+                            axios.put('/apps/QrScanner/update-otp', otpData)
+                                .then(response => {
+                                    console.log(response);
+                                    this.setState({ appSTATE: 'Verification' });
+                                })
+                                .catch((error) => {
+                                    this.setState({ appSTATE: 'Error' })
+                                });
 
-                    axios.post('/apps/QrScanner/update-privilege', privilegeData)
-                        .then(response => {
-                            console.log(response);
-                        })
-                        .catch((error) => {
-                            this.setState({ appSTATE: 'Error' })
-                        });
-                } else if (!studentWorkflow) {
-                    this.setState({
-                        appSTATE: 'Result', currentID: id, currentOTP: otp,
-                        currentUserId: userId, currentScannedBy: scannedBy,
-                        currentSessionId: sessionId, currentModule: module,
-                        passOnPrivilegeOfScanningUser: passOnPrivilege,
-                        dbStartDate: dbStartDate, dbEndDate: dbEndDate,
-                        dbStartTime: dbStartTime, dbEndTime: dbEndTime,
-                        dbLabName: dbLabName
-                    });
+                            axios.post('/apps/QrScanner/update-privilege', privilegeData)
+                                .then(response => {
+                                    console.log(response);
+                                })
+                                .catch((error) => {
+                                    this.setState({ appSTATE: 'Error' })
+                                });
+                        } else if (!studentWorkflow) {
+                            this.setState({
+                                appSTATE: 'Result', currentID: id, currentOTP: otp,
+                                currentUserId: userId, currentScannedBy: scannedBy,
+                                currentSessionId: sessionId, currentModule: module,
+                                passOnPrivilegeOfScanningUser: passOnPrivilege,
+                                dbStartDate: dbStartDate, dbEndDate: dbEndDate,
+                                dbStartTime: dbStartTime, dbEndTime: dbEndTime,
+                                dbLabName: dbLabName
+                            });
+                        }
+                    } else {
+                        this.setState({ appSTATE: 'CannotScan' });
+                    }
+                } else {
+                    this.setState({ appSTATE: 'QRVerified' });
                 }
-            } else if (this.check(id, otp) == true && !canScan) {
-                this.setState({ appSTATE: 'CannotScan' });
             } else {
                 this.setState({ appSTATE: 'Error' });
             }
@@ -375,6 +360,10 @@ export default class App extends Component {
                 </ul>
                 <button onClick={this.handleClick}>Keep Scanning</button>
             </div>
+        } else if (appState === "QRVerified") {
+            view = <div>
+                <h2>QR Code is already verified</h2>
+            </div>
         } else {
             view = <div>
                 <h2>An error occured during scanning</h2>
@@ -401,4 +390,45 @@ function isToday(someDate) {
     return new Date(someDate).getDate() == today.getDate() &&
         new Date(someDate).getMonth() == today.getMonth() &&
         new Date(someDate).getFullYear() == today.getFullYear();
+}
+
+function getScannedUserDetails(responseBody, scannedBy, module) {
+    let dbStartDate, dbEndDate, dbStartTime, dbEndTime, dbLabName = null;
+    let canScan, passOnPrivilege = false;
+    if (responseBody) {
+        for (var i = 0; i < responseBody.length; i++) {
+            if (responseBody[i].UserId === scannedBy && responseBody[i].Module == module) {
+                if (responseBody[i].StartDate != null) {
+                    dbStartDate = responseBody[i].StartDate;
+                }
+                if (responseBody[i].EndDate != null) {
+                    dbEndDate = responseBody[i].EndDate;
+                }
+                if (responseBody[i].StartTime != null) {
+                    dbStartTime = responseBody[i].StartTime;
+                }
+                if (responseBody[i].EndTime != null) {
+                    dbEndTime = responseBody[i].EndTime;
+                }
+                if (responseBody[i].RoomName != null) {
+                    dbLabName = responseBody[i].RoomName;
+                }
+                if (responseBody[i].CanScan) {
+                    canScan = true;
+                    passOnPrivilege = responseBody[i].PassOnPrivilege;
+                    break;
+                }
+            }
+        }
+    }
+    return {
+        "dbStartDate": dbStartDate,
+        "dbEndDate": dbEndDate,
+        "dbStartTime": dbStartTime,
+        "dbEndTime": dbEndTime,
+        "dbLabName": dbLabName,
+        "canScan": canScan,
+        "passOnPrivilege": passOnPrivilege
+
+    }
 }

@@ -39561,93 +39561,61 @@ var App = /*#__PURE__*/function (_Component) {
       var _handleScan = _babel_runtime_helpers_asyncToGenerator__WEBPACK_IMPORTED_MODULE_1___default()( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_9___default.a.mark(function _callee(data) {
         var _this2 = this;
 
-        var _data$split, _data$split2, id, otp, userId, scannedBy, sessionId, module, dbStartDate, dbEndDate, dbStartTime, dbEndTime, dbLabName, canScan, passOnPrivilege, privilegeResponse, responseBody, i, studentWorkflow, validTimeStudent, systemTime, startDateTime, endDateTime, otpData, privilegeData;
+        var _data$split, _data$split2, id, otp, userId, scannedBy, sessionId, module, qrData, response, privilegeResponse, responseBody, scannedUserDetails, studentWorkflow, validTimeStudent, systemTime, startDateTime, endDateTime, otpData, privilegeData;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_9___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 if (!data) {
-                  _context.next = 25;
+                  _context.next = 20;
                   break;
                 }
 
-                _data$split = data.split('/'), _data$split2 = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default()(_data$split, 6), id = _data$split2[0], otp = _data$split2[1], userId = _data$split2[2], scannedBy = _data$split2[3], sessionId = _data$split2[4], module = _data$split2[5];
-                canScan = false;
-                passOnPrivilege = false;
+                _data$split = data.split('/'), _data$split2 = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default()(_data$split, 6), id = _data$split2[0], otp = _data$split2[1], userId = _data$split2[2], scannedBy = _data$split2[3], sessionId = _data$split2[4], module = _data$split2[5]; //First check if QR code is valid, if invalid throw error
+                //If QR is valid check if it is already verified or not
+                //If both are true, then start processing
+
+                if (!(this.check(id, otp) == true)) {
+                  _context.next = 19;
+                  break;
+                }
+
+                qrData = {
+                  id: id
+                };
                 _context.next = 6;
-                return axios__WEBPACK_IMPORTED_MODULE_11___default.a.get('/apps/QRScanner/retrieve-privilege');
+                return axios__WEBPACK_IMPORTED_MODULE_11___default.a.post('/apps/QRCodeGenerator/get-items', qrData);
 
               case 6:
-                privilegeResponse = _context.sent;
-                responseBody = JSON.parse(privilegeResponse.data.response.body);
+                response = _context.sent;
 
-                if (!responseBody) {
-                  _context.next = 24;
+                if (response.data.isVerified) {
+                  _context.next = 16;
                   break;
                 }
 
-                i = 0;
+                _context.next = 10;
+                return axios__WEBPACK_IMPORTED_MODULE_11___default.a.get('/apps/QRScanner/retrieve-privilege');
 
               case 10:
-                if (!(i < responseBody.length)) {
-                  _context.next = 24;
-                  break;
-                }
+                privilegeResponse = _context.sent;
+                responseBody = JSON.parse(privilegeResponse.data.response.body);
+                scannedUserDetails = getScannedUserDetails(responseBody, scannedBy, module);
 
-                if (!(responseBody[i].UserId === scannedBy && responseBody[i].Module == module)) {
-                  _context.next = 21;
-                  break;
-                }
-
-                if (responseBody[i].StartDate != null) {
-                  dbStartDate = responseBody[i].StartDate;
-                }
-
-                if (responseBody[i].EndDate != null) {
-                  dbEndDate = responseBody[i].EndDate;
-                }
-
-                if (responseBody[i].StartTime != null) {
-                  dbStartTime = responseBody[i].StartTime;
-                }
-
-                if (responseBody[i].EndTime != null) {
-                  dbEndTime = responseBody[i].EndTime;
-                }
-
-                if (responseBody[i].RoomName != null) {
-                  dbLabName = responseBody[i].RoomName;
-                }
-
-                if (!responseBody[i].CanScan) {
-                  _context.next = 21;
-                  break;
-                }
-
-                canScan = true;
-                passOnPrivilege = responseBody[i].PassOnPrivilege;
-                return _context.abrupt("break", 24);
-
-              case 21:
-                i++;
-                _context.next = 10;
-                break;
-
-              case 24:
-                if (this.check(id, otp) == true && canScan) {
+                if (scannedUserDetails.canScan) {
                   //Student workflow
                   studentWorkflow = false;
                   validTimeStudent = true;
 
-                  if (dbStartDate != null && dbEndDate != null) {
-                    if (dbStartDate == dbEndDate) {
+                  if (scannedUserDetails.dbStartDate != null && scannedUserDetails.dbEndDate != null) {
+                    if (scannedUserDetails.dbStartDate == scannedUserDetails.dbEndDate) {
                       studentWorkflow = true;
                       systemTime = new Date();
-                      startDateTime = new Date(dbStartDate.slice(0, 10) + ' ' + dbStartTime);
-                      endDateTime = new Date(dbEndDate.slice(0, 10) + ' ' + dbEndTime);
+                      startDateTime = new Date(scannedUserDetails.dbStartDate.slice(0, 10) + ' ' + scannedUserDetails.dbStartTime);
+                      endDateTime = new Date(scannedUserDetails.dbEndDate.slice(0, 10) + ' ' + scannedUserDetails.dbEndTime);
 
-                      if (!(systemTime >= startDateTime && systemTime <= endDateTime) || !isToday(dbStartDate)) {
+                      if (!(systemTime >= startDateTime && systemTime <= endDateTime) || !isToday(scannedUserDetails.dbStartDate)) {
                         validTimeStudent = false;
                         this.setState({
                           appSTATE: 'StudentError'
@@ -39656,7 +39624,7 @@ var App = /*#__PURE__*/function (_Component) {
                     }
                   }
 
-                  if (studentWorkflow && validTimeStudent && this.state.appSTATE != "StudentResult") {
+                  if (studentWorkflow && validTimeStudent) {
                     this.setState({
                       appSTATE: 'StudentResult'
                     });
@@ -39714,17 +39682,30 @@ var App = /*#__PURE__*/function (_Component) {
                       dbLabName: dbLabName
                     });
                   }
-                } else if (this.check(id, otp) == true && !canScan) {
+                } else {
                   this.setState({
                     appSTATE: 'CannotScan'
                   });
-                } else {
-                  this.setState({
-                    appSTATE: 'Error'
-                  });
                 }
 
-              case 25:
+                _context.next = 17;
+                break;
+
+              case 16:
+                this.setState({
+                  appSTATE: 'QRVerified'
+                });
+
+              case 17:
+                _context.next = 20;
+                break;
+
+              case 19:
+                this.setState({
+                  appSTATE: 'Error'
+                });
+
+              case 20:
               case "end":
                 return _context.stop();
             }
@@ -39956,6 +39937,8 @@ var App = /*#__PURE__*/function (_Component) {
         view = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("h2", null, "An error occured during scanning"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("p", null, "Most likely cause of errors"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("ul", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("li", null, "Lab Time expired, or trying to scan early before the lab commences")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("button", {
           onClick: this.handleClick
         }, "Keep Scanning"));
+      } else if (appState === "QRVerified") {
+        view = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("h2", null, "QR Code is already verified"));
       } else {
         view = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("h2", null, "An error occured during scanning"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("p", null, "Most likely cause of errors"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("ul", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("li", null, "Scanning the wrong QR code"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("li", null, "The QR code value has been changed from what was generated"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("li", null, "Network error")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_10___default.a.createElement("button", {
           onClick: this.handleClick
@@ -39974,6 +39957,58 @@ var App = /*#__PURE__*/function (_Component) {
 function isToday(someDate) {
   var today = new Date();
   return new Date(someDate).getDate() == today.getDate() && new Date(someDate).getMonth() == today.getMonth() && new Date(someDate).getFullYear() == today.getFullYear();
+}
+
+function getScannedUserDetails(responseBody, scannedBy, module) {
+  var dbStartDate,
+      dbEndDate,
+      dbStartTime,
+      dbEndTime,
+      dbLabName = null;
+  var canScan,
+      passOnPrivilege = false;
+
+  if (responseBody) {
+    for (var i = 0; i < responseBody.length; i++) {
+      if (responseBody[i].UserId === scannedBy && responseBody[i].Module == module) {
+        if (responseBody[i].StartDate != null) {
+          dbStartDate = responseBody[i].StartDate;
+        }
+
+        if (responseBody[i].EndDate != null) {
+          dbEndDate = responseBody[i].EndDate;
+        }
+
+        if (responseBody[i].StartTime != null) {
+          dbStartTime = responseBody[i].StartTime;
+        }
+
+        if (responseBody[i].EndTime != null) {
+          dbEndTime = responseBody[i].EndTime;
+        }
+
+        if (responseBody[i].RoomName != null) {
+          dbLabName = responseBody[i].RoomName;
+        }
+
+        if (responseBody[i].CanScan) {
+          canScan = true;
+          passOnPrivilege = responseBody[i].PassOnPrivilege;
+          break;
+        }
+      }
+    }
+  }
+
+  return {
+    "dbStartDate": dbStartDate,
+    "dbEndDate": dbEndDate,
+    "dbStartTime": dbStartTime,
+    "dbEndTime": dbEndTime,
+    "dbLabName": dbLabName,
+    "canScan": canScan,
+    "passOnPrivilege": passOnPrivilege
+  };
 }
 
 /***/ }),
