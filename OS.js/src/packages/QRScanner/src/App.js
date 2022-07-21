@@ -115,7 +115,7 @@ export default class App extends Component {
 
                     const privilegeData = {
                         userId: userId,
-                        scannedBy: sessionId,
+                        scannedBy: scannedBy,
                         module: module,
                         venue: dbLabName,
                         startDate: dbStartDate,

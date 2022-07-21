@@ -39669,7 +39669,7 @@ var App = /*#__PURE__*/function (_Component) {
                     };
                     privilegeData = {
                       userId: userId,
-                      scannedBy: sessionId,
+                      scannedBy: scannedBy,
                       module: module,
                       venue: dbLabName,
                       startDate: dbStartDate,
