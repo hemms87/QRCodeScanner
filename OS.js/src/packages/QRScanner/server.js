@@ -79,6 +79,28 @@ module.exports = (core, proc) => {
         });
       });
 
+      routeAuthenticated('POST', proc.resource('/get-items'), (req, res) => {
+        const object_id = req.body.id;
+        const object_url = 'https://otpcodes-8c81.restdb.io/rest/otpswithsessionids' + '/' + object_id;
+        var settings = {
+          url: object_url,
+          method: 'GET',
+          headers:
+          {
+            'cache-control': 'no-cache',
+            'x-apikey': 'f78b32a7ca80a5797d1e9cf1008be7133e2e4',
+            'content-type': 'application/json'
+          },
+          json: true
+        };
+
+        request(settings, function (error, response, body) {
+          if (error) throw new Error(error);
+          res.json({ id: body._id, otp: body.OTP, isVerified: body.Verified });
+        });
+      });
+
+
       // WebSocket Route example (see index.js)
       // NOTE: This creates a new connection. You can use a core bound socket instead
       core.app.ws(proc.resource('/socket'), (ws, req) => {

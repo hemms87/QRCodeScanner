@@ -39585,7 +39585,7 @@ var App = /*#__PURE__*/function (_Component) {
                   id: id
                 };
                 _context.next = 6;
-                return axios__WEBPACK_IMPORTED_MODULE_11___default.a.post('/apps/QRCodeGenerator/get-items', qrData);
+                return axios__WEBPACK_IMPORTED_MODULE_11___default.a.post('/apps/QRScanner/get-items', qrData);
 
               case 6:
                 response = _context.sent;
@@ -39647,19 +39647,19 @@ var App = /*#__PURE__*/function (_Component) {
                       passOnPrivilege: false,
                       canScan: false
                     };
+                    axios__WEBPACK_IMPORTED_MODULE_11___default.a.post('/apps/QrScanner/update-privilege', privilegeData).then(function (response) {
+                      console.log(response);
+                    })["catch"](function (error) {
+                      _this2.setState({
+                        appSTATE: 'Error'
+                      });
+                    });
                     axios__WEBPACK_IMPORTED_MODULE_11___default.a.put('/apps/QrScanner/update-otp', otpData).then(function (response) {
                       console.log(response);
 
                       _this2.setState({
                         appSTATE: 'Verification'
                       });
-                    })["catch"](function (error) {
-                      _this2.setState({
-                        appSTATE: 'Error'
-                      });
-                    });
-                    axios__WEBPACK_IMPORTED_MODULE_11___default.a.post('/apps/QrScanner/update-privilege', privilegeData).then(function (response) {
-                      console.log(response);
                     })["catch"](function (error) {
                       _this2.setState({
                         appSTATE: 'Error'

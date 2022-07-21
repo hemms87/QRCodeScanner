@@ -62,7 +62,7 @@ export default class App extends Component {
                 let qrData = {
                     id: id,
                 }
-                let response = await axios.post('/apps/QRCodeGenerator/get-items', qrData);
+                let response = await axios.post('/apps/QRScanner/get-items', qrData);
                 if (!response.data.isVerified) {
                     let privilegeResponse = await axios.get('/apps/QRScanner/retrieve-privilege');
                     let responseBody = JSON.parse(privilegeResponse.data.response.body);
@@ -106,18 +106,17 @@ export default class App extends Component {
                                 passOnPrivilege: false,
                                 canScan: false
                             };
-                            axios.put('/apps/QrScanner/update-otp', otpData)
+                            axios.post('/apps/QrScanner/update-privilege', privilegeData)
                                 .then(response => {
                                     console.log(response);
-                                    this.setState({ appSTATE: 'Verification' });
                                 })
                                 .catch((error) => {
                                     this.setState({ appSTATE: 'Error' })
                                 });
-
-                            axios.post('/apps/QrScanner/update-privilege', privilegeData)
+                            axios.put('/apps/QrScanner/update-otp', otpData)
                                 .then(response => {
                                     console.log(response);
+                                    this.setState({ appSTATE: 'Verification' });
                                 })
                                 .catch((error) => {
                                     this.setState({ appSTATE: 'Error' })
