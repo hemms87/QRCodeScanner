@@ -52,7 +52,7 @@ export default class App extends Component {
         this.setState({ appState: 'Error' });
     }
 
-    async handleScan(data) {
+    handleScan(data) {
         if (data) {
             const [id, otp, userId, scannedBy, sessionId, module] = data.split('/');
             //First check if QR code is valid, if invalid throw error
@@ -62,81 +62,83 @@ export default class App extends Component {
                 let qrData = {
                     id: id,
                 }
-                let response = await axios.post('/apps/QRScanner/get-items', qrData);
-                if (!response.data.isVerified) {
-                    let privilegeResponse = await axios.get('/apps/QRScanner/retrieve-privilege');
-                    let responseBody = JSON.parse(privilegeResponse.data.response.body);
-                    let scannedUserDetails = getScannedUserDetails(responseBody, scannedBy, module);
-                    if (scannedUserDetails.canScan) {
-                        //Student workflow
-                        var studentWorkflow = false;
-                        var validTimeStudent = true;
-                        if (scannedUserDetails.dbStartDate != null && scannedUserDetails.dbEndDate != null) {
-                            if (scannedUserDetails.dbStartDate == scannedUserDetails.dbEndDate) {
-                                studentWorkflow = true;
-                                let systemTime = new Date();
-                                let startDateTime = new Date(scannedUserDetails.dbStartDate.slice(0, 10) + ' ' + scannedUserDetails.dbStartTime);
-                                let endDateTime = new Date(scannedUserDetails.dbEndDate.slice(0, 10) + ' ' + scannedUserDetails.dbEndTime);
-                                if (!(systemTime >= startDateTime && systemTime <= endDateTime)
-                                    || !isToday(scannedUserDetails.dbStartDate)) {
-                                    validTimeStudent = false;
-                                    this.setState({ appSTATE: 'StudentError' });
+                axios.post('/apps/QRScanner/get-items', qrData).then((response) => {
+                    if (!response.data.isVerified) {
+                        axios.get('/apps/QRScanner/retrieve-privilege').then((privilegeResponse) => {
+                            let responseBody = JSON.parse(privilegeResponse.data.response.body);
+                            let scannedUserDetails = getScannedUserDetails(responseBody, scannedBy, module);
+                            if (scannedUserDetails.canScan) {
+                                //Student workflow
+                                var studentWorkflow = false;
+                                var validTimeStudent = true;
+                                if (scannedUserDetails.dbStartDate != null && scannedUserDetails.dbEndDate != null) {
+                                    if (scannedUserDetails.dbStartDate == scannedUserDetails.dbEndDate) {
+                                        studentWorkflow = true;
+                                        let systemTime = new Date();
+                                        let startDateTime = new Date(scannedUserDetails.dbStartDate.slice(0, 10) + ' ' + scannedUserDetails.dbStartTime);
+                                        let endDateTime = new Date(scannedUserDetails.dbEndDate.slice(0, 10) + ' ' + scannedUserDetails.dbEndTime);
+                                        if (!(systemTime >= startDateTime && systemTime <= endDateTime)
+                                            || !isToday(scannedUserDetails.dbStartDate)) {
+                                            validTimeStudent = false;
+                                            this.setState({ appSTATE: 'StudentError' });
+                                        }
+                                    }
                                 }
-                            }
-                        }
-                        if (studentWorkflow && validTimeStudent) {
-                            this.setState({ appSTATE: 'StudentResult' });
-                            const otpData = {
-                                userId: userId,
-                                sessionId: sessionId,
-                                scannedBy: scannedBy,
-                                otp: otp,
-                                id: id,
-                            };
+                                if (studentWorkflow && validTimeStudent) {
+                                    this.setState({ appSTATE: 'StudentResult' });
+                                    const otpData = {
+                                        userId: userId,
+                                        sessionId: sessionId,
+                                        scannedBy: scannedBy,
+                                        otp: otp,
+                                        id: id,
+                                    };
 
-                            const privilegeData = {
-                                userId: userId,
-                                scannedBy: scannedBy,
-                                module: module,
-                                venue: scannedUserDetails.dbLabName,
-                                startDate: scannedUserDetails.dbStartDate,
-                                endDate: scannedUserDetails.dbEndDate,
-                                startTime: scannedUserDetails.dbStartTime,
-                                endTime: scannedUserDetails.dbEndTime,
-                                passOnPrivilege: false,
-                                canScan: false
-                            };
-                            axios.post('/apps/QrScanner/update-privilege', privilegeData)
-                                .then(response => {
-                                    console.log(response);
-                                })
-                                .catch((error) => {
-                                    this.setState({ appSTATE: 'Error' })
-                                });
-                            axios.put('/apps/QrScanner/update-otp', otpData)
-                                .then(response => {
-                                    console.log(response);
-                                })
-                                .catch((error) => {
-                                    this.setState({ appSTATE: 'Error' })
-                                });
-                        } else if (!studentWorkflow) {
-                            this.setState({
-                                appSTATE: 'Result', currentID: id, currentOTP: otp,
-                                currentUserId: userId, currentScannedBy: scannedBy,
-                                currentSessionId: sessionId, currentModule: module,
-                                passOnPrivilegeOfScanningUser: passOnPrivilege,
-                                dbStartDate: scannedUserDetails.dbStartDate, dbEndDate: scannedUserDetails.dbEndDate,
-                                dbStartTime: scannedUserDetails.dbStartTime, dbEndTime: scannedUserDetails.dbEndTime,
-                                dbLabName: scannedUserDetails.dbLabName
-                            });
-                        }
+                                    const privilegeData = {
+                                        userId: userId,
+                                        scannedBy: scannedBy,
+                                        module: module,
+                                        venue: scannedUserDetails.dbLabName,
+                                        startDate: scannedUserDetails.dbStartDate,
+                                        endDate: scannedUserDetails.dbEndDate,
+                                        startTime: scannedUserDetails.dbStartTime,
+                                        endTime: scannedUserDetails.dbEndTime,
+                                        passOnPrivilege: false,
+                                        canScan: false
+                                    };
+                                    axios.post('/apps/QrScanner/update-privilege', privilegeData)
+                                        .then(response => {
+                                            console.log(response);
+                                        })
+                                        .catch((error) => {
+                                            this.setState({ appSTATE: 'Error' })
+                                        });
+                                    axios.put('/apps/QrScanner/update-otp', otpData)
+                                        .then(response => {
+                                            console.log(response);
+                                        })
+                                        .catch((error) => {
+                                            this.setState({ appSTATE: 'Error' })
+                                        });
+                                } else if (!studentWorkflow) {
+                                    this.setState({
+                                        appSTATE: 'Result', currentID: id, currentOTP: otp,
+                                        currentUserId: userId, currentScannedBy: scannedBy,
+                                        currentSessionId: sessionId, currentModule: module,
+                                        passOnPrivilegeOfScanningUser: passOnPrivilege,
+                                        dbStartDate: scannedUserDetails.dbStartDate, dbEndDate: scannedUserDetails.dbEndDate,
+                                        dbStartTime: scannedUserDetails.dbStartTime, dbEndTime: scannedUserDetails.dbEndTime,
+                                        dbLabName: scannedUserDetails.dbLabName
+                                    });
+                                }
+                            } else {
+                                this.setState({ appSTATE: 'CannotScan' });
+                            }
+                        });
                     } else {
-                        this.setState({ appSTATE: 'CannotScan' });
+                        this.setState({ appSTATE: 'QRVerified' });
                     }
-                } else {
-                    this.setState({ appSTATE: 'QRVerified' });
-                }
+                });
             } else {
                 this.setState({ appSTATE: 'Error' });
             }
