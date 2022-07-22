@@ -127,7 +127,7 @@ export default class App extends Component {
                                         appSTATE: 'Result', currentID: id, currentOTP: otp,
                                         currentUserId: userId, currentScannedBy: scannedBy,
                                         currentSessionId: sessionId, currentModule: module,
-                                        passOnPrivilegeOfScanningUser: passOnPrivilege,
+                                        passOnPrivilegeOfScanningUser: scannedUserDetails.passOnPrivilege,
                                         dbStartDate: scannedUserDetails.dbStartDate, dbEndDate: scannedUserDetails.dbEndDate,
                                         dbStartTime: scannedUserDetails.dbStartTime, dbEndTime: scannedUserDetails.dbEndTime,
                                         dbLabName: scannedUserDetails.dbLabName

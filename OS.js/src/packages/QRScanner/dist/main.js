@@ -38827,7 +38827,7 @@ var App = /*#__PURE__*/function (_Component) {
                       currentScannedBy: scannedBy,
                       currentSessionId: sessionId,
                       currentModule: module,
-                      passOnPrivilegeOfScanningUser: passOnPrivilege,
+                      passOnPrivilegeOfScanningUser: scannedUserDetails.passOnPrivilege,
                       dbStartDate: scannedUserDetails.dbStartDate,
                       dbEndDate: scannedUserDetails.dbEndDate,
                       dbStartTime: scannedUserDetails.dbStartTime,

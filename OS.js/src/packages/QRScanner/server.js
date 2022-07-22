@@ -75,6 +75,7 @@ module.exports = (core, proc) => {
         };
         request(options, function (error, response, body) {
           if (error) throw new Error(error);
+          console.log("Privilege Response " + JSON.stringify(response));
           res.json({ response: response });
         });
       });
