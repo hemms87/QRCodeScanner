@@ -38,7 +38,8 @@ export default class App extends Component {
             dbEndDate: '',
             dbStartTime: '',
             dbEndTime: '',
-            dbLabName: ''
+            dbLabName: '',
+            waiting: false
         }
     }
 
@@ -53,7 +54,8 @@ export default class App extends Component {
     }
 
     handleScan(data) {
-        if (data) {
+        if (data && !this.state.waiting) {
+            this.setState({ waiting: true });
             const [id, otp, userId, scannedBy, sessionId, module] = data.split('/');
             //First check if QR code is valid, if invalid throw error
             //If QR is valid check if it is already verified or not

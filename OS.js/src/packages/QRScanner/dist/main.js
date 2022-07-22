@@ -38713,7 +38713,8 @@ var App = /*#__PURE__*/function (_Component) {
       dbEndDate: '',
       dbStartTime: '',
       dbEndTime: '',
-      dbLabName: ''
+      dbLabName: '',
+      waiting: false
     };
     return _this;
   }
@@ -38730,7 +38731,11 @@ var App = /*#__PURE__*/function (_Component) {
     value: function handleScan(data) {
       var _this2 = this;
 
-      if (data) {
+      if (data && !this.state.waiting) {
+        this.setState({
+          waiting: true
+        });
+
         var _data$split = data.split('/'),
             _data$split2 = _babel_runtime_helpers_slicedToArray__WEBPACK_IMPORTED_MODULE_0___default()(_data$split, 6),
             id = _data$split2[0],
