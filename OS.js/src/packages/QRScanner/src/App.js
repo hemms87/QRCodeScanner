@@ -116,7 +116,6 @@ export default class App extends Component {
                             axios.put('/apps/QrScanner/update-otp', otpData)
                                 .then(response => {
                                     console.log(response);
-                                    this.setState({ appSTATE: 'Verification' });
                                 })
                                 .catch((error) => {
                                     this.setState({ appSTATE: 'Error' })
@@ -318,7 +317,6 @@ export default class App extends Component {
         } else if (appState === "StudentResult") {
             view = <div>
                 <h2>Student logged in succesfully. Logged in student have access to the module resources</h2>
-                <button onClick={this.handleClick}>Keep Scanning</button>
             </div>
         } else if (appState === "CannotScan") {
             view = <div>
