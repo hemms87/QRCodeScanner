@@ -39104,30 +39104,23 @@ function getScannedUserDetails(responseBody, scannedBy, module) {
   if (responseBody) {
     for (var i = 0; i < responseBody.length; i++) {
       if (responseBody[i].UserId === scannedBy && responseBody[i].Module == module) {
-        if (responseBody[i].StartDate != null) {
-          dbStartDate = responseBody[i].StartDate;
-        }
+        //If End Date and Start date both null - Lecturer flow
+        //If End Date > Start Date - Head Demonstrator flow
+        //If End Date === Start Date - Demonstrator flow
+        dbStartDate = responseBody[i].StartDate;
+        dbEndDate = responseBody[i].EndDate;
+        dbStartTime = responseBody[i].StartTime;
+        dbEndTime = responseBody[i].EndTime;
+        dbLabName = responseBody[i].RoomName;
+        canScan = responseBody[i].CanScan;
+        passOnPrivilege = responseBody[i].PassOnPrivilege;
 
-        if (responseBody[i].EndDate != null) {
-          dbEndDate = responseBody[i].EndDate;
-        }
-
-        if (responseBody[i].StartTime != null) {
-          dbStartTime = responseBody[i].StartTime;
-        }
-
-        if (responseBody[i].EndTime != null) {
-          dbEndTime = responseBody[i].EndTime;
-        }
-
-        if (responseBody[i].RoomName != null) {
-          dbLabName = responseBody[i].RoomName;
-        }
-
-        if (responseBody[i].CanScan) {
-          canScan = true;
-          passOnPrivilege = responseBody[i].PassOnPrivilege;
-          break;
+        if (dbStartDate != null && dbEndDate != null) {
+          if (dbStartDate == dbEndDate && isToday(dbStartDate) || dbEndDate > dbStartDate) {
+            break; //Found Demonstrator/ Head Demonstrator record
+          }
+        } else {
+          break; //Found Lecturer Record
         }
       }
     }
