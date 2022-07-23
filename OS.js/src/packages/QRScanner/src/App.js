@@ -273,22 +273,22 @@ export default class App extends Component {
         else if (appState === "Result") {
             view = <form onSubmit={this.handleSubmit}>
                 <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-                    <div style={{ width: '25%' }} align="right">
+                    <div style={{ width: '50%' }} align="right">
                         <label>
                             Lab:
                         </label>
                     </div>
-                    <div style={{ width: '75%', marginLeft: '10px' }}>
+                    <div style={{ width: '50%', marginLeft: '10px' }}>
                         <input type="text" value={this.state.venue} onChange={this.handleVenueChange} />
                     </div>
                 </div>
                 <br />
                 <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-                    <div style={{ width: '25%' }} align="right">
+                    <div style={{ width: '50%' }} align="right">
                         <label>Start Date(MM/DD/YYYY):
                         </label>
                     </div>
-                    <div style={{ width: '75%', marginLeft: '10px' }}>
+                    <div style={{ width: '50%', marginLeft: '10px' }}>
                         <input type="text"
                             value={this.state.startDate}
                             onChange={this.handleStartDateChange}
@@ -298,11 +298,11 @@ export default class App extends Component {
                 </div>
                 <br />
                 <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-                    <div style={{ width: '25%' }} align="right">
+                    <div style={{ width: '50%' }} align="right">
                         <label>End Date(MM/DD/YYYY):
                         </label>
                     </div>
-                    <div style={{ width: '75%', marginLeft: '10px' }}>
+                    <div style={{ width: '50%', marginLeft: '10px' }}>
                         <input type="text"
                             value={this.state.endDate}
                             onChange={this.handleEndDateChange}
@@ -312,11 +312,11 @@ export default class App extends Component {
                 </div>
                 <br />
                 <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-                    <div style={{ width: '25%' }} align="right">
+                    <div style={{ width: '50%' }} align="right">
                         <label>Session Start Time(HH:MM):
                         </label>
                     </div>
-                    <div style={{ width: '75%', marginLeft: '10px' }}>
+                    <div style={{ width: '50%', marginLeft: '10px' }}>
                         <input type="text"
                             value={this.state.startTime}
                             onChange={this.handleStartTimeChange}
@@ -326,11 +326,11 @@ export default class App extends Component {
                 </div>
                 <br />
                 <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-                    <div style={{ width: '25%' }} align="right">
+                    <div style={{ width: '50%' }} align="right">
                         <label>Session End Time(HH:MM):
                         </label>
                     </div>
-                    <div style={{ width: '75%', marginLeft: '10px' }}>
+                    <div style={{ width: '50%', marginLeft: '10px' }}>
                         <input type="text"
                             value={this.state.endTime}
                             onChange={this.handleEndTimeChange}
@@ -340,27 +340,27 @@ export default class App extends Component {
                 </div>
                 <br />
                 <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-                    <div style={{ width: '25%' }} align="right">
+                    <div style={{ width: '50%' }} align="right">
                         <label>
                             Pass on Privilege:
                         </label>
                     </div>
-                    <div style={{ width: '75%', marginLeft: '10px' }}>
+                    <div style={{ width: '50%', marginLeft: '10px' }}>
                         <input type="checkbox" checked={this.state.passOnPrivilege}
                             onChange={this.handlePassOnPrivilegeChange} />
                     </div>
                 </div>
                 <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-                    <div style={{ width: '25%' }} align="right">
+                    <div style={{ width: '50%' }} align="right">
                         <label>
                             Can Scan:
                         </label></div>
-                    <div style={{ width: '75%', marginLeft: '10px' }}>
+                    <div style={{ width: '50%', marginLeft: '10px' }}>
                         <input type="checkbox" checked={this.state.canScan}
                             onChange={this.handleCanScanChange} />
                     </div>
                 </div>
-                <div style={{ width: '73%' }} align="right">
+                <div style={{ width: '80%' }} align="right">
                     <input type="submit" value="Verify" />
                 </div>
                 <br />

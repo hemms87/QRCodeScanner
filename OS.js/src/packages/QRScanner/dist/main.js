@@ -39031,12 +39031,12 @@ var App = /*#__PURE__*/function (_Component) {
           }
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
           style: {
-            width: '25%'
+            width: '50%'
           },
           align: "right"
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "Lab:")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
           style: {
-            width: '75%',
+            width: '50%',
             marginLeft: '10px'
           }
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
@@ -39051,12 +39051,12 @@ var App = /*#__PURE__*/function (_Component) {
           }
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
           style: {
-            width: '25%'
+            width: '50%'
           },
           align: "right"
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "Start Date(MM/DD/YYYY):")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
           style: {
-            width: '75%',
+            width: '50%',
             marginLeft: '10px'
           }
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
@@ -39072,12 +39072,12 @@ var App = /*#__PURE__*/function (_Component) {
           }
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
           style: {
-            width: '25%'
+            width: '50%'
           },
           align: "right"
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "End Date(MM/DD/YYYY):")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
           style: {
-            width: '75%',
+            width: '50%',
             marginLeft: '10px'
           }
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
@@ -39093,12 +39093,12 @@ var App = /*#__PURE__*/function (_Component) {
           }
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
           style: {
-            width: '25%'
+            width: '50%'
           },
           align: "right"
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "Session Start Time(HH:MM):")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
           style: {
-            width: '75%',
+            width: '50%',
             marginLeft: '10px'
           }
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
@@ -39114,12 +39114,12 @@ var App = /*#__PURE__*/function (_Component) {
           }
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
           style: {
-            width: '25%'
+            width: '50%'
           },
           align: "right"
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "Session End Time(HH:MM):")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
           style: {
-            width: '75%',
+            width: '50%',
             marginLeft: '10px'
           }
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
@@ -39135,12 +39135,12 @@ var App = /*#__PURE__*/function (_Component) {
           }
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
           style: {
-            width: '25%'
+            width: '50%'
           },
           align: "right"
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "Pass on Privilege:")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
           style: {
-            width: '75%',
+            width: '50%',
             marginLeft: '10px'
           }
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
@@ -39155,12 +39155,12 @@ var App = /*#__PURE__*/function (_Component) {
           }
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
           style: {
-            width: '25%'
+            width: '50%'
           },
           align: "right"
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "Can Scan:")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
           style: {
-            width: '75%',
+            width: '50%',
             marginLeft: '10px'
           }
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
@@ -39169,7 +39169,7 @@ var App = /*#__PURE__*/function (_Component) {
           onChange: this.handleCanScanChange
         }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
           style: {
-            width: '73%'
+            width: '80%'
           },
           align: "right"
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
