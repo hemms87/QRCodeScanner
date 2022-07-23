@@ -176,7 +176,7 @@ export default class App extends Component {
     }
 
     handleClick() {
-        this.setState({ appSTATE: 'Verification' });
+        this.setState({ appSTATE: 'Verification', waiting: false });
     }
 
     handleSubmit(event) {
@@ -208,6 +208,7 @@ export default class App extends Component {
         if (this.state.startDate != null && this.state.endDate != null) {
             //Head Demonstrator/ Demonstrator workflow
             //Checking if the date is in range
+            //If DB values are not present, Lecturer can give whatever values for the date range he wants
             if (this.state.dbStartDate != null && this.state.dbEndDate != null) {
                 if ((new Date(this.state.startDate) >= new Date(this.state.dbStartDate.slice(0, 10))
                     && new Date(this.state.endDate) <= new Date(this.state.dbEndDate.slice(0, 10)))) {
@@ -222,10 +223,10 @@ export default class App extends Component {
                 if (this.state.venue == this.state.dbLabName) {
                     validLabChosen = true;
                 }
-            }
-            if (!(validDatesChosen && validTimeChosen && validLabChosen)) {
-                invalidDateOrTimeOrLab = true;
-                this.setState({ appSTATE: 'InvalidDateOrTimeOrLab' });
+                if (!(validDatesChosen && validTimeChosen && validLabChosen)) {
+                    invalidDateOrTimeOrLab = true;
+                    this.setState({ appSTATE: 'InvalidDateOrTimeOrLab' });
+                }
             }
         }
         if (!invalidDateOrTimeOrLab) {
