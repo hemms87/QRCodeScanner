@@ -272,54 +272,97 @@ export default class App extends Component {
 
         else if (appState === "Result") {
             view = <form onSubmit={this.handleSubmit}>
-                <label>
-                    Lab:
-                    <input type="text" value={this.state.venue} onChange={this.handleVenueChange} />
-                </label>
+                <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+                    <div style={{ width: '25%' }} align="right">
+                        <label>
+                            Lab:
+                        </label>
+                    </div>
+                    <div style={{ width: '75%', marginLeft: '10px' }}>
+                        <input type="text" value={this.state.venue} onChange={this.handleVenueChange} />
+                    </div>
+                </div>
                 <br />
-                <label>Start Date(MM/DD/YYYY):
-                    <input type="text"
-                        value={this.state.startDate}
-                        onChange={this.handleStartDateChange}
-                        name="startDate"
-                    />
-                </label>
+                <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+                    <div style={{ width: '25%' }} align="right">
+                        <label>Start Date(MM/DD/YYYY):
+                        </label>
+                    </div>
+                    <div style={{ width: '75%', marginLeft: '10px' }}>
+                        <input type="text"
+                            value={this.state.startDate}
+                            onChange={this.handleStartDateChange}
+                            name="startDate"
+                        />
+                    </div>
+                </div>
                 <br />
-                <label>End Date(MM/DD/YYYY):
-                    <input type="text"
-                        value={this.state.endDate}
-                        onChange={this.handleEndDateChange}
-                        name="endDate"
-                    />
-                </label>
+                <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+                    <div style={{ width: '25%' }} align="right">
+                        <label>End Date(MM/DD/YYYY):
+                        </label>
+                    </div>
+                    <div style={{ width: '75%', marginLeft: '10px' }}>
+                        <input type="text"
+                            value={this.state.endDate}
+                            onChange={this.handleEndDateChange}
+                            name="endDate"
+                        />
+                    </div>
+                </div>
                 <br />
-                <label>Session Start Time(HH:MM):
-                    <input type="text"
-                        value={this.state.startTime}
-                        onChange={this.handleStartTimeChange}
-                        name="startTime"
-                    />
-                </label>
+                <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+                    <div style={{ width: '25%' }} align="right">
+                        <label>Session Start Time(HH:MM):
+                        </label>
+                    </div>
+                    <div style={{ width: '75%', marginLeft: '10px' }}>
+                        <input type="text"
+                            value={this.state.startTime}
+                            onChange={this.handleStartTimeChange}
+                            name="startTime"
+                        />
+                    </div>
+                </div>
                 <br />
-                <label>Session End Time(HH:MM):
-                    <input type="text"
-                        value={this.state.endTime}
-                        onChange={this.handleEndTimeChange}
-                        name="endTime"
-                    />
-                </label>
+                <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+                    <div style={{ width: '25%' }} align="right">
+                        <label>Session End Time(HH:MM):
+                        </label>
+                    </div>
+                    <div style={{ width: '75%', marginLeft: '10px' }}>
+                        <input type="text"
+                            value={this.state.endTime}
+                            onChange={this.handleEndTimeChange}
+                            name="endTime"
+                        />
+                    </div>
+                </div>
                 <br />
-                <label>
-                    Pass on Privilege:
-                    <input type="checkbox" checked={this.state.passOnPrivilege}
-                        onChange={this.handlePassOnPrivilegeChange} />
-                </label>
-                <label>
-                    Can Scan:
-                    <input type="checkbox" checked={this.state.canScan}
-                        onChange={this.handleCanScanChange} />
-                </label>
-                <input type="submit" value="Verify" />
+                <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+                    <div style={{ width: '25%' }} align="right">
+                        <label>
+                            Pass on Privilege:
+                        </label>
+                    </div>
+                    <div style={{ width: '75%', marginLeft: '10px' }}>
+                        <input type="checkbox" checked={this.state.passOnPrivilege}
+                            onChange={this.handlePassOnPrivilegeChange} />
+                    </div>
+                </div>
+                <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+                    <div style={{ width: '25%' }} align="right">
+                        <label>
+                            Can Scan:
+                        </label></div>
+                    <div style={{ width: '75%', marginLeft: '10px' }}>
+                        <input type="checkbox" checked={this.state.canScan}
+                            onChange={this.handleCanScanChange} />
+                    </div>
+                </div>
+                <div style={{ width: '73%' }} align="right">
+                    <input type="submit" value="Verify" />
+                </div>
                 <br />
             </form>
         } else if (appState === "StudentResult") {
