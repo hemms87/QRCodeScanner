@@ -38940,8 +38940,9 @@ var App = /*#__PURE__*/function (_Component) {
       var validLabChosen = false;
       var invalidDateOrTimeOrLab = false;
 
-      if (this.state.startDate == this.state.endDate) {
-        //Demonstrator workflow
+      if (this.state.startDate != null && this.state.endDate != null) {
+        //Head Demonstrator/ Demonstrator workflow
+        //Checking if the date is in range
         if (this.state.dbStartDate != null && this.state.dbEndDate != null) {
           if (new Date(this.state.startDate) >= new Date(this.state.dbStartDate.slice(0, 10)) && new Date(this.state.endDate) <= new Date(this.state.dbEndDate.slice(0, 10))) {
             validDatesChosen = true;
