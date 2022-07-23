@@ -177,6 +177,7 @@ export default class App extends Component {
 
     handleClick() {
         this.setState({ appSTATE: 'Verification', waiting: false });
+        this.forceUpdate();
     }
 
     handleSubmit(event) {
@@ -323,6 +324,7 @@ export default class App extends Component {
         } else if (appState === "StudentResult") {
             view = <div>
                 <h2>Student logged in succesfully. Logged in student have access to the module resources</h2>
+                <button onClick={this.handleClick}>Keep Scanning</button>
             </div>
         } else if (appState === "CannotScan") {
             view = <div>

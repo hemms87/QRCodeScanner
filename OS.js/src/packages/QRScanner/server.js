@@ -51,7 +51,7 @@ module.exports = (core, proc) => {
             UserId: req.body.userId, ScannedBy: req.body.scannedBy,
             Module: req.body.module, RoomName: req.body.venue, StartDate: req.body.startDate,
             EndDate: req.body.endDate, StartTime: req.body.startTime, EndTime: req.body.endTime,
-            PassOnPrivilege: req.body.passOnPrivilege, CanScan: req.body.canScan
+            PassOnPrivilege: req.body.passOnPrivilege, CanScan: req.body.canScan, ScannedTime: new Date()
           },
           json: true
         };
