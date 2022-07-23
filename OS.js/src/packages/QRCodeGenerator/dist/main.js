@@ -2317,7 +2317,7 @@ var register = function register(core, args, options, metadata) {
     title: 'Request for QR Code',
     icon: proc.resource(proc.metadata.icon),
     dimension: {
-      width: 400,
+      width: 370,
       height: 400
     },
     position: {
@@ -34615,21 +34615,78 @@ var App = /*#__PURE__*/function (_Component) {
           module: this.state.module
         });
       } else {
-        view = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "User ID:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
+        view = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+          style: {
+            marginTop: '20px'
+          }
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+          style: {
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'center'
+          }
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+          style: {
+            width: '25%'
+          },
+          align: "right"
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "User ID:")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+          style: {
+            width: '75%',
+            marginLeft: '10px'
+          }
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
           type: "text",
           value: this.state.userId,
           onChange: this.handleUserIdChange
-        })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "Scanned By:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
+        }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+          style: {
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'center'
+          }
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+          style: {
+            width: '25%'
+          },
+          align: "right"
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "Scanned By:")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+          style: {
+            width: '75%',
+            marginLeft: '10px'
+          }
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
           type: "text",
           value: this.state.scannedBy,
           onChange: this.handleScannedByChange
-        })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "Module:", /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
+        }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+          style: {
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'center'
+          }
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+          style: {
+            width: '25%'
+          },
+          align: "right"
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "Module:")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+          style: {
+            width: '75%',
+            marginLeft: '10px'
+          }
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
           type: "text",
           value: this.state.module,
           onChange: this.handleModuleChange
-        })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("button", {
+        }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+          style: {
+            width: '73%'
+          },
+          align: "right"
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("button", {
           onClick: this.createotp
-        }, "Get QRCode"));
+        }, "Get QRCode")));
       }
 
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", null, view);

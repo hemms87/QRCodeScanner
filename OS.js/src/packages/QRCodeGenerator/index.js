@@ -12,7 +12,7 @@ const register = (core, args, options, metadata) => {
     id: 'QRCodeGenerator',
     title: 'Request for QR Code',
     icon: proc.resource(proc.metadata.icon),
-    dimension: { width: 400, height: 400 },
+    dimension: { width: 370, height: 400 },
     position: { left: 700, top: 200 }
   })
     .on('destroy', () => proc.destroy())

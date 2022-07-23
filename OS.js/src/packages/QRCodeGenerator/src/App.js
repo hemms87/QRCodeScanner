@@ -60,23 +60,44 @@ class App extends Component {
         module={this.state.module} />;
     }
     else {
-      view = <div><label>
-        User ID:
-        <input type="text" value={this.state.userId} onChange={this.handleUserIdChange} />
-      </label>
+      view = <div style={{ marginTop: '20px' }}>
+        <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+          <div style={{ width: '25%' }} align="right">
+            <label>
+              User ID:
+            </label>
+          </div>
+          <div style={{ width: '75%', marginLeft: '10px' }}>
+            <input type="text" value={this.state.userId} onChange={this.handleUserIdChange} />
+          </div>
+        </div>
         <br />
-        <label>
-          Scanned By:
-          <input type="text" value={this.state.scannedBy} onChange={this.handleScannedByChange} />
-        </label>
+        <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+          <div style={{ width: '25%' }} align="right">
+            <label>
+              Scanned By:
+            </label>
+          </div>
+          <div style={{ width: '75%', marginLeft: '10px' }}>
+            <input type="text" value={this.state.scannedBy} onChange={this.handleScannedByChange} />
+          </div>
+        </div>
         <br />
-        <label>
-          Module:
-          <input type="text" value={this.state.module} onChange={this.handleModuleChange} />
-        </label>
+        <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+          <div style={{ width: '25%' }} align="right">
+            <label>
+              Module:
+            </label>
+          </div>
+          <div style={{ width: '75%', marginLeft: '10px' }}>
+            <input type="text" value={this.state.module} onChange={this.handleModuleChange} />
+          </div>
+        </div>
         <br />
-        <button onClick={this.createotp}>Get QRCode</button>
-      </div>
+        <div style={{ width: '73%' }} align="right">
+          <button onClick={this.createotp}>Get QRCode</button>
+        </div>
+      </div >
     }
 
     return (
