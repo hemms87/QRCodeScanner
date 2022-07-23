@@ -38947,7 +38947,10 @@ var App = /*#__PURE__*/function (_Component) {
         //Checking if the date is in range
         //If DB values are not present, Lecturer can give whatever values for the date range he wants
         if (this.state.dbStartDate != null && this.state.dbEndDate != null) {
-          if (new Date(this.state.startDate) >= new Date(this.state.dbStartDate.slice(0, 10)) && new Date(this.state.endDate) <= new Date(this.state.dbEndDate.slice(0, 10))) {
+          var dbStartDateUTC = new Date(new Date(this.state.dbStartDate).getUTCMonth() + "/" + new Date(this.state.dbStartDate).getDate() + "/" + new Date(this.state.dbStartDate).getUTCFullYear());
+          var dbEndDateUTC = new Date(new Date(this.state.dbEndDate).getUTCMonth() + "/" + new Date(this.state.dbEndDate).getDate() + "/" + new Date(this.state.dbEndDate).getUTCFullYear());
+
+          if (new Date(this.state.startDate) >= dbStartDateUTC && new Date(this.state.endDate) <= dbEndDateUTC) {
             validDatesChosen = true;
           }
 
