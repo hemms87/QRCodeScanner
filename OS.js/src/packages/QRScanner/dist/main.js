@@ -39041,6 +39041,9 @@ var App = /*#__PURE__*/function (_Component) {
           }
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
           type: "text",
+          style: {
+            width: '35%'
+          },
           value: this.state.venue,
           onChange: this.handleVenueChange
         }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
@@ -39061,6 +39064,9 @@ var App = /*#__PURE__*/function (_Component) {
           }
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
           type: "text",
+          style: {
+            width: '35%'
+          },
           value: this.state.startDate,
           onChange: this.handleStartDateChange,
           name: "startDate"
@@ -39082,6 +39088,9 @@ var App = /*#__PURE__*/function (_Component) {
           }
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
           type: "text",
+          style: {
+            width: '35%'
+          },
           value: this.state.endDate,
           onChange: this.handleEndDateChange,
           name: "endDate"
@@ -39096,13 +39105,16 @@ var App = /*#__PURE__*/function (_Component) {
             width: '50%'
           },
           align: "right"
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "Session Start Time(HH:MM):")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "Start Time(HH:MM):")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
           style: {
             width: '50%',
             marginLeft: '10px'
           }
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
           type: "text",
+          style: {
+            width: '35%'
+          },
           value: this.state.startTime,
           onChange: this.handleStartTimeChange,
           name: "startTime"
@@ -39117,13 +39129,16 @@ var App = /*#__PURE__*/function (_Component) {
             width: '50%'
           },
           align: "right"
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "Session End Time(HH:MM):")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("label", null, "End Time(HH:MM):")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
           style: {
             width: '50%',
             marginLeft: '10px'
           }
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
           type: "text",
+          style: {
+            width: '35%'
+          },
           value: this.state.endTime,
           onChange: this.handleEndTimeChange,
           name: "endTime"
