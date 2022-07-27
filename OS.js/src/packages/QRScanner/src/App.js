@@ -279,7 +279,7 @@ export default class App extends Component {
                         </label>
                     </div>
                     <div style={{ width: '50%', marginLeft: '10px' }}>
-                        <input type="text" style={{ width: '40%' }} value={this.state.venue} onChange={this.handleVenueChange} />
+                        <input type="text" style={{ width: '45%' }} value={this.state.venue} onChange={this.handleVenueChange} />
                     </div>
                 </div>
                 <br />
@@ -289,7 +289,7 @@ export default class App extends Component {
                         </label>
                     </div>
                     <div style={{ width: '50%', marginLeft: '10px' }}>
-                        <input type="text" style={{ width: '40%' }}
+                        <input type="text" style={{ width: '45%' }}
                             value={this.state.startDate}
                             onChange={this.handleStartDateChange}
                             name="startDate"
@@ -303,7 +303,7 @@ export default class App extends Component {
                         </label>
                     </div>
                     <div style={{ width: '50%', marginLeft: '10px' }}>
-                        <input type="text" style={{ width: '40%' }}
+                        <input type="text" style={{ width: '45%' }}
                             value={this.state.endDate}
                             onChange={this.handleEndDateChange}
                             name="endDate"
@@ -317,7 +317,7 @@ export default class App extends Component {
                         </label>
                     </div>
                     <div style={{ width: '50%', marginLeft: '10px' }}>
-                        <input type="text" style={{ width: '40%' }}
+                        <input type="text" style={{ width: '45%' }}
                             value={this.state.startTime}
                             onChange={this.handleStartTimeChange}
                             name="startTime"
@@ -331,7 +331,7 @@ export default class App extends Component {
                         </label>
                     </div>
                     <div style={{ width: '50%', marginLeft: '10px' }}>
-                        <input type="text" style={{ width: '40%' }}
+                        <input type="text" style={{ width: '45%' }}
                             value={this.state.endTime}
                             onChange={this.handleEndTimeChange}
                             name="endTime"

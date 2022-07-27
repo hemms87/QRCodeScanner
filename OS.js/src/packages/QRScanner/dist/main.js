@@ -2318,12 +2318,12 @@ var register = function register(core, args, options, metadata) {
     title: metadata.title.en_EN,
     icon: proc.resource(proc.metadata.icon),
     dimension: {
-      width: 300,
+      width: 350,
       height: 400
     },
     position: {
-      left: 700,
-      top: 200
+      left: 350,
+      top: 100
     }
   }).on('destroy', function () {
     return proc.destroy();
@@ -39042,7 +39042,7 @@ var App = /*#__PURE__*/function (_Component) {
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
           type: "text",
           style: {
-            width: '40%'
+            width: '45%'
           },
           value: this.state.venue,
           onChange: this.handleVenueChange
@@ -39065,7 +39065,7 @@ var App = /*#__PURE__*/function (_Component) {
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
           type: "text",
           style: {
-            width: '40%'
+            width: '45%'
           },
           value: this.state.startDate,
           onChange: this.handleStartDateChange,
@@ -39089,7 +39089,7 @@ var App = /*#__PURE__*/function (_Component) {
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
           type: "text",
           style: {
-            width: '40%'
+            width: '45%'
           },
           value: this.state.endDate,
           onChange: this.handleEndDateChange,
@@ -39113,7 +39113,7 @@ var App = /*#__PURE__*/function (_Component) {
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
           type: "text",
           style: {
-            width: '40%'
+            width: '45%'
           },
           value: this.state.startTime,
           onChange: this.handleStartTimeChange,
@@ -39137,7 +39137,7 @@ var App = /*#__PURE__*/function (_Component) {
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
           type: "text",
           style: {
-            width: '40%'
+            width: '45%'
           },
           value: this.state.endTime,
           onChange: this.handleEndTimeChange,

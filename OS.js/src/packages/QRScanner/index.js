@@ -15,8 +15,8 @@ const register = (core, args, options, metadata) => {
     id: 'QrScanner',
     title: metadata.title.en_EN,
     icon: proc.resource(proc.metadata.icon),
-    dimension: { width: 300, height: 400 },
-    position: { left: 700, top: 200 }
+    dimension: { width: 350, height: 400 },
+    position: { left: 350, top: 100 }
   })
     .on('destroy', () => proc.destroy())
     .render($content => ReactDom.render(React.createElement(App), $content)
