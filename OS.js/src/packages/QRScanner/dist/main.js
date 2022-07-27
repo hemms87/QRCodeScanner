@@ -2318,7 +2318,7 @@ var register = function register(core, args, options, metadata) {
     title: metadata.title.en_EN,
     icon: proc.resource(proc.metadata.icon),
     dimension: {
-      width: 400,
+      width: 300,
       height: 400
     },
     position: {
@@ -39042,7 +39042,7 @@ var App = /*#__PURE__*/function (_Component) {
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
           type: "text",
           style: {
-            width: '35%'
+            width: '40%'
           },
           value: this.state.venue,
           onChange: this.handleVenueChange
@@ -39065,7 +39065,7 @@ var App = /*#__PURE__*/function (_Component) {
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
           type: "text",
           style: {
-            width: '35%'
+            width: '40%'
           },
           value: this.state.startDate,
           onChange: this.handleStartDateChange,
@@ -39089,7 +39089,7 @@ var App = /*#__PURE__*/function (_Component) {
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
           type: "text",
           style: {
-            width: '35%'
+            width: '40%'
           },
           value: this.state.endDate,
           onChange: this.handleEndDateChange,
@@ -39113,7 +39113,7 @@ var App = /*#__PURE__*/function (_Component) {
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
           type: "text",
           style: {
-            width: '35%'
+            width: '40%'
           },
           value: this.state.startTime,
           onChange: this.handleStartTimeChange,
@@ -39137,7 +39137,7 @@ var App = /*#__PURE__*/function (_Component) {
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
           type: "text",
           style: {
-            width: '35%'
+            width: '40%'
           },
           value: this.state.endTime,
           onChange: this.handleEndTimeChange,
@@ -39184,7 +39184,7 @@ var App = /*#__PURE__*/function (_Component) {
           onChange: this.handleCanScanChange
         }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("div", {
           style: {
-            width: '80%'
+            width: '75%'
           },
           align: "right"
         }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_8___default.a.createElement("input", {
