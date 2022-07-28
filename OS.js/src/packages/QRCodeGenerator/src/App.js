@@ -41,7 +41,8 @@ class App extends Component {
     let response = await axios.post('/apps/QRCodeGenerator/create-otp', { userId, sessionId, scannedBy });
     console.log(response);
     const stats = (response.data.isVerified === 'true');
-    const qr_url = response.data.id + '/' + response.data.otp + '/' + response.data.userId + '/' + response.data.scannedBy + '/' + response.data.sessionId + '/' + module;
+    const qr_url = response.data.id + '/' + response.data.otp + '/' + response.data.userId + '/'
+      + response.data.scannedBy + '/' + response.data.sessionId + '/' + module;
     this.setState({
       isClicked: true, current_id: response.data.id, is_verified: stats, current_url: qr_url,
       sessionId: response.data.sessionId, userId: response.data.userId, scannedBy: scannedBy,
@@ -55,9 +56,9 @@ class App extends Component {
     let view;
 
     if (btnClicked) {
-      view = <QrcodeView url={this.state.current_url} isVerified={this.state.is_verified} id={this.state.current_id}
-        userId={this.state.userId} sessionId={this.state.sessionId} scannedBy={this.state.scannedBy}
-        module={this.state.module} />;
+      view = <QrcodeView url={this.state.current_url} isVerified={this.state.is_verified}
+        id={this.state.current_id} userId={this.state.userId} sessionId={this.state.sessionId}
+        scannedBy={this.state.scannedBy} module={this.state.module} />;
     }
     else {
       view = <div style={{ marginTop: '20px' }}>

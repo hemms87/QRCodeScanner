@@ -38693,7 +38693,6 @@ var App = /*#__PURE__*/function (_Component) {
     _this.handleCanScanChange = _this.handleCanScanChange.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_3___default()(_this));
     _this.handleSubmit = _this.handleSubmit.bind(_babel_runtime_helpers_assertThisInitialized__WEBPACK_IMPORTED_MODULE_3___default()(_this));
     _this.state = {
-      result: 'No result',
       appSTATE: 'Verification',
       currentID: null,
       currentOTP: null,

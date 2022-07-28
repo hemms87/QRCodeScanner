@@ -18,7 +18,6 @@ export default class App extends Component {
         this.handleCanScanChange = this.handleCanScanChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.state = {
-            result: 'No result',
             appSTATE: 'Verification',
             currentID: null,
             currentOTP: null,
