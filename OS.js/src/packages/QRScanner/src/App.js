@@ -122,15 +122,19 @@ export default class App extends Component {
                                             this.setState({ appSTATE: 'Error' })
                                         });
                                 } else if (!studentWorkflow) {
-                                    this.setState({
-                                        appSTATE: 'Result', currentID: id, currentOTP: otp,
-                                        currentUserId: userId, currentScannedBy: scannedBy,
-                                        currentSessionId: sessionId, currentModule: module,
-                                        passOnPrivilegeOfScanningUser: scannedUserDetails.passOnPrivilege,
-                                        dbStartDate: scannedUserDetails.dbStartDate, dbEndDate: scannedUserDetails.dbEndDate,
-                                        dbStartTime: scannedUserDetails.dbStartTime, dbEndTime: scannedUserDetails.dbEndTime,
-                                        dbLabName: scannedUserDetails.dbLabName
-                                    });
+                                    if (scannedUserDetails.passOnPrivilege) {
+                                        this.setState({
+                                            appSTATE: 'Result', currentID: id, currentOTP: otp,
+                                            currentUserId: userId, currentScannedBy: scannedBy,
+                                            currentSessionId: sessionId, currentModule: module,
+                                            passOnPrivilegeOfScanningUser: scannedUserDetails.passOnPrivilege,
+                                            dbStartDate: scannedUserDetails.dbStartDate, dbEndDate: scannedUserDetails.dbEndDate,
+                                            dbStartTime: scannedUserDetails.dbStartTime, dbEndTime: scannedUserDetails.dbEndTime,
+                                            dbLabName: scannedUserDetails.dbLabName
+                                        });
+                                    } else {
+                                        this.setState({ appSTATE: 'CannotPassOnPrivilege' });
+                                    }
                                 }
                             } else {
                                 this.setState({ appSTATE: 'CannotScan' });
@@ -206,12 +210,13 @@ export default class App extends Component {
         var validLabChosen = false;
         var invalidDateOrTimeOrLab = false;
         if (this.state.startDate != null && this.state.endDate != null) {
-            //Head Demonstrator/ Demonstrator workflow
-            //Checking if the date is in range
+            //Head Demonstrator/ Demonstrator workflow, Checking if the date is in range
             //If DB values are not present, Lecturer can give whatever values for the date range he wants
             if (this.state.dbStartDate != null && this.state.dbEndDate != null) {
-                let dbStartDateUTC = new Date(new Date(this.state.dbStartDate).getUTCMonth() + "/" + new Date(this.state.dbStartDate).getDate() + "/" + new Date(this.state.dbStartDate).getUTCFullYear());
-                let dbEndDateUTC = new Date(new Date(this.state.dbEndDate).getUTCMonth() + "/" + new Date(this.state.dbEndDate).getDate() + "/" + new Date(this.state.dbEndDate).getUTCFullYear());
+                let dbStartDateUTC = new Date(new Date(this.state.dbStartDate).getUTCMonth() + "/" + new Date(this.state.dbStartDate).getDate()
+                    + "/" + new Date(this.state.dbStartDate).getUTCFullYear());
+                let dbEndDateUTC = new Date(new Date(this.state.dbEndDate).getUTCMonth() + "/" + new Date(this.state.dbEndDate).getDate()
+                    + "/" + new Date(this.state.dbEndDate).getUTCFullYear());
                 if (new Date(this.state.startDate) >= dbStartDateUTC && new Date(this.state.endDate) <= dbEndDateUTC) {
                     validDatesChosen = true;
                 }
@@ -474,6 +479,5 @@ function getScannedUserDetails(responseBody, scannedBy, module) {
         "dbLabName": dbLabName,
         "canScan": canScan,
         "passOnPrivilege": passOnPrivilege
-
     }
 }

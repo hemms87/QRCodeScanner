@@ -38818,21 +38818,27 @@ var App = /*#__PURE__*/function (_Component) {
                       });
                     });
                   } else if (!studentWorkflow) {
-                    _this2.setState({
-                      appSTATE: 'Result',
-                      currentID: id,
-                      currentOTP: otp,
-                      currentUserId: userId,
-                      currentScannedBy: scannedBy,
-                      currentSessionId: sessionId,
-                      currentModule: module,
-                      passOnPrivilegeOfScanningUser: scannedUserDetails.passOnPrivilege,
-                      dbStartDate: scannedUserDetails.dbStartDate,
-                      dbEndDate: scannedUserDetails.dbEndDate,
-                      dbStartTime: scannedUserDetails.dbStartTime,
-                      dbEndTime: scannedUserDetails.dbEndTime,
-                      dbLabName: scannedUserDetails.dbLabName
-                    });
+                    if (scannedUserDetails.passOnPrivilege) {
+                      _this2.setState({
+                        appSTATE: 'Result',
+                        currentID: id,
+                        currentOTP: otp,
+                        currentUserId: userId,
+                        currentScannedBy: scannedBy,
+                        currentSessionId: sessionId,
+                        currentModule: module,
+                        passOnPrivilegeOfScanningUser: scannedUserDetails.passOnPrivilege,
+                        dbStartDate: scannedUserDetails.dbStartDate,
+                        dbEndDate: scannedUserDetails.dbEndDate,
+                        dbStartTime: scannedUserDetails.dbStartTime,
+                        dbEndTime: scannedUserDetails.dbEndTime,
+                        dbLabName: scannedUserDetails.dbLabName
+                      });
+                    } else {
+                      _this2.setState({
+                        appSTATE: 'CannotPassOnPrivilege'
+                      });
+                    }
                   }
                 } else {
                   _this2.setState({
@@ -38942,8 +38948,7 @@ var App = /*#__PURE__*/function (_Component) {
       var invalidDateOrTimeOrLab = false;
 
       if (this.state.startDate != null && this.state.endDate != null) {
-        //Head Demonstrator/ Demonstrator workflow
-        //Checking if the date is in range
+        //Head Demonstrator/ Demonstrator workflow, Checking if the date is in range
         //If DB values are not present, Lecturer can give whatever values for the date range he wants
         if (this.state.dbStartDate != null && this.state.dbEndDate != null) {
           var dbStartDateUTC = new Date(new Date(this.state.dbStartDate).getUTCMonth() + "/" + new Date(this.state.dbStartDate).getDate() + "/" + new Date(this.state.dbStartDate).getUTCFullYear());
